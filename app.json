@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "DECO7381prj",
+    "slug": "DECO7381prj",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "DECO7381prj"
+}
