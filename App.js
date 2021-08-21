@@ -41,30 +41,19 @@ export default function App() {
     console.log(err);
   });
 
-  
-
-  // return (
-  //   <View style={styles.container}>
-  //     <Header titleText={'Home Page'} />
-  //     <SearchBox />
-  //     <ShoppingCartContainer />
-  //     <Navigation />
-  //     <StatusBar style="auto" />
-  //   </View>
-  // );
 
   return (
     <NativeRouter>
       <View style={styles.container}>
         <View style={styles.nav}>
           <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
-            <Text>Home</Text>
+            <Text style={styles.navText}>Home</Text>
           </Link>
           <Link to="/about" underlayColor="#f0f4f7" style={styles.navItem}>
-            <Text>OrderCart</Text>
+            <Text style={styles.navText}>OrderCart</Text>
           </Link>
           <Link to="/topics" underlayColor="#f0f4f7" style={styles.navItem}>
-            <Text>MyInfo</Text>
+            <Text style={styles.navText}>MyInfo</Text>
           </Link>
         </View>
 
@@ -96,7 +85,11 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    border: '1px solid grey',
+    boxShadow: '1px 2px 11px -1px rgba(100,84,84,0.75)',
     alignItems: 'center',
+  },
+  navText: {
+    fontWeight: 'bold',
+    fontSize: 15
   }
 });

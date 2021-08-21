@@ -35,7 +35,7 @@ const ProductCardTwo = (props) => {
 
 const styles= StyleSheet.create({
   container: {
-    width: 180,
+    width: 190,
     height: 120,
     backgroundColor: '#FFF',
     borderRadius: 10,
@@ -44,15 +44,29 @@ const styles= StyleSheet.create({
     flexDirection: 'row'
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10
-
+    width: 90,
+    height: 90,
+    borderRadius: 10,
+    margin: 10
   },
-  right: {},
-  name: {},
-  season: {},
-  price: {}
+  right: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: 70
+  },
+  name: {
+    fontSize: 15,
+    marginTop: 15
+  },
+  season: {
+    fontSize: 12,
+    color: 'grey',
+    marginTop: 5
+  },
+  price: {
+    fontSize: 15,
+    marginTop: 5
+  }
 });
 
 export default ProductCardTwo;

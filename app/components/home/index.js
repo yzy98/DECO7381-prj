@@ -3,11 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import Filter from '../filter';
 import ProductContainer from '../productContainer';
 import SearchBox from '../search-box';
+import {ShoppingOutlined} from '@ant-design/icons';
 
 const Home = (props) => {
 
   return (
     <View style={styles.container}>
+      <ShoppingOutlined style={{
+        fontSize: 30,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        paddingRight: 20
+      }} />
       <Header {...props} />
       <View style={styles.searchFilter}>
         <SearchBox />
@@ -26,13 +33,11 @@ const Home = (props) => {
         </View>
       </View>
       <View style={styles.bottomContent}>
-        <View style={styles.bottomLeft}>
-          <Text>Recommended</Text>
-        </View>
+        <Text style={styles.recommend}>Recommended</Text>
         <View style={styles.bottomRight}>
           <View style={styles.bottomHeader}>
-            <Text>Best Price</Text>
-            <Text>see all</Text>
+            <Text style={styles.bestPrice}>Best Price</Text>
+            <Text style={styles.seeAll}>See all</Text>
           </View>
           <ProductContainer typeCardOne={false} />
         </View>
@@ -56,7 +61,7 @@ const Header = (props) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 50,
+    top: 20,
     width: '100%',
     paddingLeft: 30
   },
@@ -104,13 +109,28 @@ const styles = StyleSheet.create({
     flex: 3,
     display: 'flex',
     flexDirection: 'column',
-    width: '70%'
+    width: '70%',
+    marginLeft: -20
   },
   bottomHeader: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 15
+  },
+  bestPrice: {
+    fontSize: 20,
+  },
+  seeAll: {
+    marginLeft: 100,
+    textDecorationLine: 'underline'
+  },
+  recommend: {
+    flex: 1,
+    transform: [{rotate: '-90deg'}],
+    marginTop: 10,
+    height: 90,
+    fontSize: 15
   }
 });
 
