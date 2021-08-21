@@ -3,18 +3,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import Filter from '../filter';
 import ProductContainer from '../productContainer';
 import SearchBox from '../search-box';
-import {ShoppingOutlined} from '@ant-design/icons';
+import BagIcon from '../bagIcon';
 
 const Home = (props) => {
 
   return (
     <View style={styles.container}>
-      <ShoppingOutlined style={{
-        fontSize: 30,
+      <View style={{
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'flex-end',
         paddingRight: 20
-      }} />
+      }}>
+        <BagIcon num={7} />
+      </View>
       <Header {...props} />
       <View style={styles.searchFilter}>
         <SearchBox />
