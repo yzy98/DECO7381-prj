@@ -11,7 +11,7 @@ const ProductCard = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imgContainer}>
+      <View style={styles.imgContainer} onResponderGrant={() => {console.log('Cliked!')}}>
         <Image style={styles.image} source={getImage(name)} />
       </View>
       <Text style={styles.name}>{name}</Text>
@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     backgroundColor: '#ced4da',
-    borderRadius: 10
+    borderRadius: 10,
+    boxShadow: '1px 2px 11px -1px rgba(100,84,84,0.75)'
   },
   image: {
     width: 120,

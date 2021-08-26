@@ -73,7 +73,7 @@ const MyInfo  = () => <Text>MyInfo page</Text>;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#edf6f9',
+    backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -41,7 +41,8 @@ const styles= StyleSheet.create({
     borderRadius: 10,
     marginRight: 15,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    boxShadow: '1px 2px 11px -1px rgba(100,84,84,0.75)'
   },
   image: {
     width: 90,

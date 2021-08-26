@@ -4,6 +4,8 @@ import Filter from '../filter';
 import ProductContainer from '../productContainer';
 import SearchBox from '../search-box';
 import BagIcon from '../bagIcon';
+import { FontAwesomeIcon, } from '@fortawesome/react-native-fontawesome';
+import { faCarrot, faLemon } from '@fortawesome/free-solid-svg-icons';
 
 const Home = (props) => {
 
@@ -24,8 +26,14 @@ const Home = (props) => {
       </View>
       <View style={styles.middleContent}>
         <View style={styles.middleLeft}>
-          <Text>In season</Text>
-          <Text>Off season</Text>
+          <View style={styles.seasonContainer}>
+            <FontAwesomeIcon icon={faCarrot} size={48} />
+            <Text style={{marginTop: 10}}>In season</Text>
+          </View>
+          <View style={styles.seasonContainer}>
+            <FontAwesomeIcon icon={faLemon} size={48} color={'grey'} />
+            <Text style={{color: 'grey', marginTop: 10}}>Off season</Text>
+          </View>
         </View>
         <View style={styles.middleRight}>
           <Text style={styles.popularProduct}>
@@ -86,7 +94,8 @@ const styles = StyleSheet.create({
   middleLeft: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    left: -20
   },
   middleRight: {
     flex: 3,
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15
+    marginBottom: 5
   },
   bestPrice: {
     fontSize: 20,
@@ -133,6 +142,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 90,
     fontSize: 15
+  },
+  seasonContainer: {
+    alignItems: 'center',
+    marginBottom: 30
   }
 });
 
