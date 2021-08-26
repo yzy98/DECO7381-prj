@@ -35,14 +35,18 @@ const TypeOne = () => {
 const TypeTwo = () => {
   return (
     <ScrollView
-    style={{paddingLeft: 10}}
+      style={{
+        paddingLeft: 10,
+        paddingTop: 10,
+        paddingBottom: 15
+      }}
       horizontal='true'
     >
-      <ProductCardTwo name='Australian apple' season={true} price={10} />
-      <ProductCardTwo name='Australian blueberry' season={false} price={7} />
       <ProductCardTwo name='Australian banana' season={true} price={10} />
       <ProductCardTwo name='Australian strawberry' season={false} price={16} />
       <ProductCardTwo name='Australian blueberry' season={true} price={4} />
+      <ProductCardTwo name='Australian apple' season={true} price={10} />
+      <ProductCardTwo name='Australian blueberry' season={false} price={7} />
     </ScrollView>
   );
 };
