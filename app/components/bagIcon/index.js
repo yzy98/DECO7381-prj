@@ -12,7 +12,7 @@ const BagIcon = (props) => {
     }}>
       <FontAwesomeIcon icon={faShoppingBag} size={32} />
       <Text style={{
-        backgroundColor: 'red',
+        backgroundColor: '#dc2f02',
         color: '#FFF',
         fontWeight: 'bold',
         width: 15,

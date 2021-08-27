@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import Filter from '../filter';
 import ProductContainer from '../productContainer';
 import SearchBox from '../search-box';
 import BagIcon from '../bagIcon';
-import { FontAwesomeIcon, } from '@fortawesome/react-native-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCarrot, faLemon } from '@fortawesome/free-solid-svg-icons';
+
+const couponICon = require('../productCard/images/coupon.png');
 
 const Home = (props) => {
 
@@ -33,6 +35,10 @@ const Home = (props) => {
           <View style={styles.seasonContainer}>
             <FontAwesomeIcon icon={faLemon} size={48} color={'grey'} />
             <Text style={{color: 'grey', marginTop: 10}}>Off season</Text>
+          </View>
+          <View style={styles.seasonContainer}>
+            <Image style={{width: 70, height: 70}} source={couponICon} />
+            <Text style={{marginTop: 10}}>Coupons</Text>
           </View>
         </View>
         <View style={styles.middleRight}>
