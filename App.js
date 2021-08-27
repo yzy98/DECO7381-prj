@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import Home from './app/components/home';
+import OrderCart from './app/components/orderCart';
 
 import firebase from 'firebase';
 
@@ -58,15 +59,13 @@ export default function App() {
         </View>
 
         <Route exact path="/" render={() => <Home user={'Navana'} />} />
-        <Route path="/about" component={OrderCart} />
-        <Route path="/topics" component={MyInfo} />
+        <Route path="/about" render={() => <OrderCart />} />
+        <Route path="/topics" render={() => <MyInfo />} />
 
       </View>
     </NativeRouter>
   );
 }
-
-const OrderCart = () => <Text>OrderCart</Text>;
 
 const MyInfo  = () => <Text>MyInfo page</Text>;
 
