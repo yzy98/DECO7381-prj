@@ -11,6 +11,9 @@ if your local machine has not installed npm, you need to install it [here](https
 
 ## UI
 ### Home
-<img width="324" alt="home" src="https://user-images.githubusercontent.com/61411023/130898729-d8060c2d-5cdf-41ad-aa36-8a461af4ec73.png">
+<img width="329" alt="Screen Shot 2021-08-28 at 12 09 04 AM" src="https://user-images.githubusercontent.com/61411023/131157001-68768af5-f4c8-483c-98f8-af285eb61c49.png">
+
+### OrderCart
+<img width="327" alt="Screen Shot 2021-08-28 at 12 09 39 AM" src="https://user-images.githubusercontent.com/61411023/131157102-efc6e2be-1dbe-4e76-991f-911fbc468a28.png">
 
 
