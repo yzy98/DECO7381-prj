@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import Home from './app/components/home';
 import OrderCart from './app/components/orderCart';
+import MyInfo from './app/components/myInfo';
 
 import firebase from 'firebase';
 
@@ -66,8 +67,6 @@ export default function App() {
     </NativeRouter>
   );
 }
-
-const MyInfo  = () => <Text>MyInfo page</Text>;
 
 const styles = StyleSheet.create({
   container: {
