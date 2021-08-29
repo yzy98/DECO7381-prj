@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import Filter from '../filter';
 import ProductContainer from '../productContainer';
 import SearchBox from '../search-box';
@@ -10,6 +10,11 @@ import { faCarrot, faLemon } from '@fortawesome/free-solid-svg-icons';
 const couponICon = require('../productCard/images/coupon.png');
 
 const Home = (props) => {
+  const [isInSeason, setSeason] = useState(true);
+
+  const handlePressSeason = () => {
+    setSeason(prev => !prev);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,14 +33,22 @@ const Home = (props) => {
       </View>
       <View style={styles.middleContent}>
         <View style={styles.middleLeft}>
-          <View style={styles.seasonContainer}>
-            <FontAwesomeIcon icon={faCarrot} size={48} />
-            <Text style={{marginTop: 10}}>In season</Text>
-          </View>
-          <View style={styles.seasonContainer}>
-            <FontAwesomeIcon icon={faLemon} size={48} color={'grey'} />
-            <Text style={{color: 'grey', marginTop: 10}}>Off season</Text>
-          </View>
+          <Pressable
+            onPress={handlePressSeason}
+          >
+            <View style={styles.seasonContainer}>
+              <FontAwesomeIcon icon={faCarrot} size={isInSeason ? 54 : 48} color={isInSeason ? 'black' : 'grey'} />
+              <Text style={isInSeason ? styles.inSeasonText : styles.offSeasonText}>In season</Text>
+            </View>
+          </Pressable>
+          <Pressable
+            onPress={handlePressSeason}
+          >
+            <View style={styles.seasonContainer}>
+              <FontAwesomeIcon icon={faLemon} size={isInSeason ? 48 : 54} color={'grey'} color={isInSeason ? 'grey' : 'black'} />
+              <Text style={isInSeason ? styles.offSeasonText : styles.inSeasonText}>Off season</Text>
+            </View>
+          </Pressable>
           <View style={styles.seasonContainer}>
             <Image style={{width: 70, height: 70}} source={couponICon} />
             <Text style={{marginTop: 10}}>Coupons</Text>
@@ -152,6 +165,16 @@ const styles = StyleSheet.create({
   seasonContainer: {
     alignItems: 'center',
     marginBottom: 30
+  },
+  inSeasonText: {
+    color: 'black', 
+    marginTop: 10,
+    fontSize: 15
+  },
+  offSeasonText: {
+    color: 'grey', 
+    marginTop: 10,
+    fontSize: 12
   }
 });
 
