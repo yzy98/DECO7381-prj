@@ -58,7 +58,7 @@ const Home = (props) => {
           <Text style={styles.popularProduct}>
             Popular Product
           </Text>
-          <ProductContainer typeCardOne={true} {...props} />
+          <ProductContainer typeCardOne={true} isInSeason={isInSeason} {...props} />
         </View>
       </View>
       <View style={styles.bottomContent}>

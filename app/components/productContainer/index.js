@@ -18,9 +18,11 @@ const ProductContainer = (props) => {
 };
 
 const TypeOne = (props) => {
-  const {fruitList} = props;
+  const {fruitList, isInSeason} = props;
 
-  const body = fruitList.map((item) => {
+  const filteredFruitsArr = fruitList.filter(item => item.Season == isInSeason);
+
+  const body = filteredFruitsArr.map((item) => {
     return (
       <ProductCard name={item.Name} season={item.Season} price={item.Price} />
     );
