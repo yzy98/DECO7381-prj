@@ -19,7 +19,7 @@ const Home = (props) => {
         justifyContent: 'flex-end',
         paddingRight: 20
       }}>
-        <BagIcon num={7} />
+        <BagIcon />
       </View>
       <Header {...props} />
       <View style={styles.searchFilter}>
@@ -45,7 +45,7 @@ const Home = (props) => {
           <Text style={styles.popularProduct}>
             Popular Product
           </Text>
-          <ProductContainer typeCardOne={true} />
+          <ProductContainer typeCardOne={true} {...props} />
         </View>
       </View>
       <View style={styles.bottomContent}>
@@ -55,7 +55,7 @@ const Home = (props) => {
             <Text style={styles.bestPrice}>Best Price</Text>
             <Text style={styles.seeAll}>See all</Text>
           </View>
-          <ProductContainer typeCardOne={false} />
+          <ProductContainer typeCardOne={false} {...props} />
         </View>
       </View>
     </View>

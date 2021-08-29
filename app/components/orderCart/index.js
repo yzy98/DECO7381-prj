@@ -5,6 +5,7 @@ import CartCard from '../cartCard';
 import Radio from '../radio';
 
 const OrderCart = (props) => {
+  const {ordersArr} = props;
   const [totalCost, setTotalCost] = useState(0);
   const [selectAll, setSelectAll] = useState(false);
 
@@ -20,22 +21,21 @@ const OrderCart = (props) => {
     setTotalCost(prevTotal => prevTotal - p);
   }
 
+  const body = ordersArr.map((item) => {
+    return (
+      <CartCard name={item.name} price={item.price} addPrice={addPrice} minPrice={minPrice} />
+    );
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text>Your Cart</Text>
-        <BagIcon num={7} />
+        <BagIcon />
       </View>
       <View style={styles.body}>
         <ScrollView style={styles.cartContainer}>
-          <CartCard name='Australian apple' price={10} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian strawberry' price={15} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian banana' price={3} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian apple' price={6} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian strawberry' price={15} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian banana' price={3} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian strawberry' price={15} addPrice={addPrice} minPrice={minPrice} />
-          <CartCard name='Australian banana' price={3} addPrice={addPrice} minPrice={minPrice} />
+          {ordersArr.length > 0 ? body : <Text style={styles.empty}>There is no item in your cart...</Text>}
         </ScrollView>
         <View style={{
           display: 'flex',
@@ -95,6 +95,11 @@ const styles= StyleSheet.create({
   font: {
     fontSize: 15,
     color: '#03045e'
+  },
+  empty: {
+    fontSize: 20,
+    color: '#03045e',
+    textAlign: 'center'
   }
 });
 

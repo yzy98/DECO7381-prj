@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { database } from '../../../App';
+
+async function addToCart(name, season, price) {
+  return database.ref().child('OrderCart').push({name, season, price});
+}
 
 const appleImg = require('./images/apple.jpeg');
 const banannaImg = require('./images/banana.jpeg');
@@ -8,6 +13,14 @@ const blueberryImg = require('./images/bulueburries.png');
 
 const ProductCard = (props) => {
   const {name, season, price} = props;
+
+  const handlePress = () => {
+    addToCart(name, season, price).then(() => {
+      console.log('added to db');
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -18,7 +31,11 @@ const ProductCard = (props) => {
       <Text style={styles.season}>{season ? 'In season' : 'Off season'}</Text>
       <View style={styles.bottom}>
         <Text style={styles.price}>${price}/kg</Text>
-        <Image style={styles.plus} source={require('./images/plus.png')} />
+        <TouchableOpacity
+          onPress={handlePress}
+        >
+          <Image style={styles.plus} source={require('./images/plus.png')} />
+        </TouchableOpacity>
       </View>
     </View>
     
@@ -26,13 +43,13 @@ const ProductCard = (props) => {
 };
 
 const getImage = (name) => {
-  if (name.includes('apple')) {
+  if (name.toLowerCase().includes('apple')) {
     return appleImg;
-  } else if (name.includes('banana')) {
+  } else if (name.toLowerCase().includes('banana')) {
     return banannaImg;
-  } else if (name.includes('straw')) {
+  } else if (name.toLowerCase().includes('straw')) {
     return starwberryImg;
-  } else if (name.includes('blueberry')) {
+  } else if (name.toLowerCase().includes('blueberry')) {
     return blueberryImg;
   }
 };

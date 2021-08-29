@@ -5,9 +5,9 @@ import ProductCardTwo from '../productCardTwo';
 
 const ProductContainer = (props) => {
   const {typeCardOne} = props;
-  let typeee = <TypeTwo />;
+  let typeee = <TypeTwo {...props} />;
   if (typeCardOne) {
-    typeee = <TypeOne />
+    typeee = <TypeOne {...props} />;
   }
 
   return (
@@ -17,22 +17,34 @@ const ProductContainer = (props) => {
   );
 };
 
-const TypeOne = () => {
+const TypeOne = (props) => {
+  const {fruitList} = props;
+
+  const body = fruitList.map((item) => {
+    return (
+      <ProductCard name={item.Name} season={item.Season} price={item.Price} />
+    );
+  });
+
   return (
     <ScrollView
     style={{paddingLeft: 10}}
       horizontal='true'
     >
-      <ProductCard name='Australian apple' season={true} price={10} />
-      <ProductCard name='Australian blueberry' season={false} price={7} />
-      <ProductCard name='Australian banana' season={true} price={10} />
-      <ProductCard name='Australian strawberry' season={false} price={16} />
-      <ProductCard name='Australian blueberry' season={true} price={4} />
+      {body}
     </ScrollView>
   );
 };
 
-const TypeTwo = () => {
+const TypeTwo = (props) => {
+  const {fruitList} = props;
+
+  const body = fruitList.map((item) => {
+    return (
+      <ProductCardTwo name={item.Name} season={item.Season} price={item.Price} />
+    );
+  });
+
   return (
     <ScrollView
       style={{
@@ -42,11 +54,7 @@ const TypeTwo = () => {
       }}
       horizontal='true'
     >
-      <ProductCardTwo name='Australian banana' season={true} price={10} />
-      <ProductCardTwo name='Australian strawberry' season={false} price={16} />
-      <ProductCardTwo name='Australian blueberry' season={true} price={4} />
-      <ProductCardTwo name='Australian apple' season={true} price={10} />
-      <ProductCardTwo name='Australian blueberry' season={false} price={7} />
+      {body}
     </ScrollView>
   );
 };

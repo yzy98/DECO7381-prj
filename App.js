@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import Home from './app/components/home';
@@ -24,25 +24,46 @@ const database = firebase.database();
 
 export default function App() {
 
-  let fruitObj = {};
+  const [fruitArr, setFruitArr] = useState([]);
+  const [ordersArr, setOrdersArr] = useState([]);
 
-  const [fruitAr, setFruitAr] = useState([]);
+  useEffect(() => {
+    database.ref().child('Fruit').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        setFruitArr(snapshot.val());
+  
+      } else {
+        console.log("No data available");
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
 
-  database.ref().child('userData').child('sasa22').child('ordercart').get().then((snapshot) => {
-    if (snapshot.exists()) {
-      // console.log(snapshot.val());
-      // fruitStr = JSON.stringify(snapshot.val());
-      fruitObj = snapshot.val();
-      // console.log(fruitObj);
-      setFruitAr(Object.keys(fruitObj).map(item => fruitObj[item]));
+    database.ref().child('OrderCart').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        // console.log(Object.values(snapshot.val()));
+        setOrdersArr(Object.values(snapshot.val())); 
+      } else {
+        console.log("No data available");
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
 
-    } else {
-      console.log("No data available");
-    }
-  }).catch((err) => {
-    console.log(err);
-  });
-
+    database.ref().child('OrderCart').on('child_added',() => {
+      database.ref().child('OrderCart').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(Object.values(snapshot.val()));
+          setOrdersArr(Object.values(snapshot.val()));   
+        } else {
+          console.log("No data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  },[]);
 
   return (
     <NativeRouter>
@@ -59,8 +80,8 @@ export default function App() {
           </Link>
         </View>
 
-        <Route exact path="/" render={() => <Home user={'Navana'} />} />
-        <Route path="/about" render={() => <OrderCart />} />
+        <Route exact path="/" render={() => <Home user={'Navana'} fruitList={fruitArr} />} />
+        <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo />} />
 
       </View>
@@ -91,3 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 15
   }
 });
+
+export {
+  database
+};

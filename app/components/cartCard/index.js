@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
 });
 
 const getImage = (name) => {
-  if (name.includes('apple')) {
+  if (name.toLowerCase().includes('apple')) {
     return appleImg;
-  } else if (name.includes('banana')) {
+  } else if (name.toLowerCase().includes('banana')) {
     return banannaImg;
-  } else if (name.includes('straw')) {
+  } else if (name.toLowerCase().includes('straw')) {
     return starwberryImg;
-  } else if (name.includes('blueberry')) {
+  } else if (name.toLowerCase().includes('blueberry')) {
     return blueberryImg;
   }
 };
