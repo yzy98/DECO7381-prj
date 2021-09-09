@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     width: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    backgroundColor: '#F6F8F9'
   },
   header: {
     position: 'relative',

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Button, ScrollView } from 'react-native'
 import BagIcon from '../bagIcon';
 import CartCard from '../cartCard';
 import Radio from '../radio';
+import {Link} from "react-router-native";
 
 const OrderCart = (props) => {
   const {ordersArr} = props;
@@ -30,7 +31,7 @@ const OrderCart = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>Your Cart</Text>
+        <Text style={{fontSize: 20, color: '#03045e'}}>Your Cart</Text>
         <BagIcon />
       </View>
       <View style={styles.body}>
@@ -57,13 +58,12 @@ const OrderCart = (props) => {
           <Text style={styles.font}>${totalCost}</Text>
         </View>
       </View>
-      <Button 
-        style={{
-          marginHorizontal: 20
-        }}
-        title='Checkout'
-        color='#03045e'
-      />
+      <Link to={{
+        pathname: "/checkout",
+        state: {totalCost: totalCost}
+      }}>
+        <Text>Checkout</Text>
+      </Link>
     </View>
   );
 };

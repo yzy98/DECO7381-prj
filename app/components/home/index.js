@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     width: '100%',
-    paddingLeft: 30
+    paddingLeft: 30,
+    backgroundColor: '#F6F8F9'
   },
   header: {
     position: 'relative',

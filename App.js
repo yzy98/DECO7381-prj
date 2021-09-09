@@ -1,12 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { NativeRouter, Route, Link } from "react-router-native";
+import { NativeRouter, Route, Link, useLocation } from "react-router-native";
 import Home from './app/components/home';
 import OrderCart from './app/components/orderCart';
 import MyInfo from './app/components/myInfo';
 
 import firebase from 'firebase';
+import Checkout from './app/components/checkout';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDrwmwcTXQqQ4IwtSnG2L2mTlCZKhoAb7o",
@@ -83,7 +83,7 @@ export default function App() {
         <Route exact path="/" render={() => <Home user={'Navana'} fruitList={fruitArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo />} />
-
+        <Route path="/checkout" render={() => <Checkout />} />
       </View>
     </NativeRouter>
   );
@@ -92,7 +92,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F6F8F9',
     alignItems: 'center',
     justifyContent: 'center',
   },
