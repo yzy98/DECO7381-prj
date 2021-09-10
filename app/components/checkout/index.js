@@ -6,12 +6,84 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faEdit, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 
+
 const visaIcon = require('./assets/visa.png');
 const paypalIcon = require('./assets/paypal.png'); 
 const americaExpressIcon = require('./assets/american-express.png');
 const jcbIcon = require('./assets/jcb.png');
 const wuIcon = require('./assets/western-union.png');
 const unionPayIcon = require('./assets/unionpay.png');
+
+const fetch = require('node-fetch');
+const authUrl = "https://api-m.sandbox.paypal.com/v1/oauth2/token";
+const clientIdAndSecret = "AR4-nctm9jSuj4MLysnPFfKtwTYXpp__uq13O3_Kw1yaBG-h-NE_0KbYmsiSanu26HI1coxko2ZWdWID:EO1SZXxLX-T725slCyxVIOZZESHFeuHHJ50l_6Ja76JEHflbFSAtklsZgUr3aeFX4J7A2dQa70kPX9v7";
+const base64 = Buffer.from(clientIdAndSecret).toString('base64')
+let accessToken = '';
+
+const dataDetail = {
+  "intent": "sale",
+  "payer": {
+      "payment_method": "paypal"
+  },
+  "transactions": [{
+      "amount": {
+          "total": 100,
+          "currency": "USD",
+          "details": {
+              "subtotal": 100,
+              "tax": "0",
+              "shipping": "0",
+              "handling_fee": "0",
+              "shipping_discount": "0",
+              "insurance": "0"
+          }
+      }
+  }],
+  "redirect_urls": {
+      "return_url": "https://example.com",
+      "cancel_url": "https://example.com"
+  }
+}
+
+fetch(authUrl, { 
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Accept-Language': 'en_US',
+        'Authorization': `Basic ${base64}`,
+    },
+    body: 'grant_type=client_credentials'
+}).then(function(response) {
+    return response.json();
+    // console.log(response);
+}).then(async (data) => {
+    console.log(data.access_token);
+    accessToken = data.access_token;
+
+    let createRequest = {
+      method: 'POST', 
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+(accessToken)
+      },
+      body:JSON.stringify(dataDetail)
+    }
+
+    fetch ('https://api.sandbox.paypal.com/v1/payments/payment',createRequest)
+      .then(function(response) {
+          console.log('Response object', response);
+          return response.json()
+      }).then(async(data) => {
+          console.log('Response data',data);
+          console.log('Response data (formatted)', JSON.stringify(data,null,4) );
+      }).catch(err => {
+          console.log({ ...err })
+      })
+
+}).catch(function() {
+    console.log("couldn't get auth token");
+});
 
 const Checkout = () => {
   const location = useLocation();
