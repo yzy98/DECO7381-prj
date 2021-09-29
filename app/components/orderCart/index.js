@@ -58,11 +58,18 @@ const OrderCart = (props) => {
           <Text style={styles.font}>${totalCost}</Text>
         </View>
       </View>
-      <Link to={{
-        pathname: "/checkout",
-        state: {totalCost: totalCost}
-      }}>
-        <Text>Checkout</Text>
+      <Link 
+        to={{
+          pathname: "/checkout",
+          state: {totalCost: totalCost}
+        }}
+        style={{
+          alignItems: 'center'
+        }}
+      >
+        <View style={styles.checkoutContainer}>
+          <Text style={styles.checkout}>Checkout</Text>
+        </View>
       </Link>
     </View>
   );
@@ -99,6 +106,20 @@ const styles= StyleSheet.create({
   empty: {
     fontSize: 20,
     color: '#03045e',
+    textAlign: 'center'
+  },
+  checkoutContainer: {
+    backgroundColor: '#03045e',
+    borderRadius: 15,
+    boxShadow: '1px 2px 11px -1px rgba(21,17,17,0.75)',
+    width: 250,
+    height: 55,
+    textAlign: 'center',
+    justifyContent: 'center'
+  },
+  checkout: {
+    color: '#F6F8F9',
+    fontSize: 20,
     textAlign: 'center'
   }
 });

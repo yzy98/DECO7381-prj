@@ -1,10 +1,17 @@
 import React from 'react';
-import { Text, View, StyleSheet, Button, Image } from "react-native";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUserCircle, faUser, faChevronRight, faMapMarkerAlt, faCreditCard, faHeart, faSearchDollar } from '@fortawesome/free-solid-svg-icons';
+import {Text, View, StyleSheet, Button, Image} from "react-native";
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faUserCircle, faUser, faChevronRight, faMapMarkerAlt, faCreditCard, faHeart, faSearchDollar} from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-native';
+import MyButton from '../myButton';
 
 const MyInfo = (props) => {
   const {name, email} = props;
+
+  const handleLogOut = () => {
+    alert('log out');
+    // call api here
+  };
 
   return (
     <View style={styles.container}>
@@ -21,13 +28,10 @@ const MyInfo = (props) => {
         <AccountLi text={'Address'} icon={faMapMarkerAlt} />
         <AccountLi text={'Account & Card'} icon={faCreditCard} />
         <AccountLi text={'Favourite list'} icon={faHeart} />
-        <AccountLi text={'Transaction Details'} icon={faSearchDollar} />
+        <AccountLi text={'Order History'} icon={faSearchDollar} />
       </View>
-      <View style={styles.btn}>
-        <Button 
-          title='Log Out'
-          color='#03045e'
-        />
+      <View style={styles.btnContainer}>
+        <MyButton title={'Log out'} click={handleLogOut} />
       </View>
     </View>
   );
@@ -37,30 +41,47 @@ const AccountLi = (props) => {
   const {text, icon} = props;
 
   return (
-    <View style={{
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: 25,
-      borderBottomColor: 'grey',
-      borderBottomWidth: 1,
-      width: '90%'
-    }}>
-      <View style={{
+    <Link to={{
+      pathname: `/${text}`
+    }}
+      style={{
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
-      }}>
-        <FontAwesomeIcon icon={icon} size={20} />
-        <Text style={{
-          fontSize: 18,
-          color: '#03045e',
-          marginLeft: 10
-        }}>{text}</Text>
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 25,
+        borderBottomColor: 'grey',
+        borderBottomWidth: 1,
+        width: '90%'
+      }}
+    >
+      <View 
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          // paddingVertical: 25,
+          // borderBottomColor: 'grey',
+          // borderBottomWidth: 1,
+          // width: '90%'
+        }}
+      >
+        <View style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}>
+          <FontAwesomeIcon icon={icon} size={20} />
+          <Text style={{
+            fontSize: 18,
+            color: '#03045e',
+            marginLeft: 10
+          }}>{text}</Text>
+        </View>
+        <FontAwesomeIcon icon={faChevronRight} size={20} />
       </View>
-      <FontAwesomeIcon icon={faChevronRight} size={20} />
-    </View>
+    </Link>
   );
 };
 
@@ -97,11 +118,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  btn: {
-    marginVertical: 50,
-    width: '90%',
-    alignSelf: 'center'
-  }
+  btnContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 30
+  },
 });
 
 export default MyInfo;

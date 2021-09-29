@@ -4,6 +4,11 @@ import { NativeRouter, Route, Link, useLocation } from "react-router-native";
 import Home from './app/components/home';
 import OrderCart from './app/components/orderCart';
 import MyInfo from './app/components/myInfo';
+import Address from './app/components/address';
+import AccountInfo from './app/components/accountInfo';
+import AccountCard from './app/components/accountCard';
+import FavouriteList from './app/components/favouriteList';
+import OrderHistory from './app/components/orderHistory';
 
 import firebase from 'firebase';
 import Checkout from './app/components/checkout';
@@ -84,6 +89,11 @@ export default function App() {
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo />} />
         <Route path="/checkout" render={() => <Checkout />} />
+        <Route path="/Account Information" render={() => <AccountInfo />} />
+        <Route path="/Address" render={() => <Address />} />
+        <Route path="/Account & Card" render={() => <AccountCard />} />
+        <Route path="/Favourite list" render={() => <FavouriteList />} />
+        <Route path="/Order History" render={() => <OrderHistory />} />
       </View>
     </NativeRouter>
   );

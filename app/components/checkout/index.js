@@ -5,6 +5,7 @@ import BagIcon from '../bagIcon';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faEdit, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
+import MyButton from '../myButton';
 
 
 const visaIcon = require('./assets/visa.png');
@@ -77,6 +78,25 @@ fetch(authUrl, {
       }).then(async(data) => {
           console.log('Response data',data);
           console.log('Response data (formatted)', JSON.stringify(data,null,4) );
+
+          let request = {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+(accessToken)
+            },
+            body:JSON.stringify({
+              "amount": {
+                "value": "100",
+                "currency_code": "USD"
+              },
+              "invoice_id": "INVOICE-123",
+              "final_capture": true,
+              "note_to_payer": "If the ordered color is not available, we will substitute with a different color free of charge.",
+              "soft_descriptor": "Bob's Custom Sweaters"
+            })
+          }
+
       }).catch(err => {
           console.log({ ...err })
       })
@@ -93,6 +113,11 @@ const Checkout = () => {
   const paySelect = (name) => {
     setCurrentPay(name);
     console.log(name);
+  };
+
+  const handleConfirm = () => {
+    alert('checkout confirmed!');
+    // call api here
   };
 
   return (
@@ -156,13 +181,15 @@ const Checkout = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             marginTop: 10,
-            marginBottom: 50
+            marginBottom: 30
           }}
         >
           <Text style={{fontSize: 18, color: 'grey'}}>YA California, UK</Text>
           <FontAwesomeIcon icon={faEdit} color={'grey'} size={20} />
         </View>
-        <Button title={'Confrim'} color={'#03045e'} />
+        <View style={styles.btnContainer}>
+          <MyButton title={'Confirm'} click={handleConfirm} />
+        </View>
       </View>
     </View>
   );
@@ -260,7 +287,11 @@ const styles= StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     marginVertical: 10
-  }
+  },
+  btnContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
 });
 
 export default Checkout;
