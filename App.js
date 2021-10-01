@@ -1,6 +1,7 @@
 import React, {useState, useEffect, Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { NativeRouter, Route, Link, useLocation } from "react-router-native";
+import {StyleSheet, Text, View} from 'react-native';
+import {NativeRouter, Route, Link} from "react-router-native";
+import LoginScreen from './app/components/login';
 import Home from './app/components/home';
 import OrderCart from './app/components/orderCart';
 import MyInfo from './app/components/myInfo';
@@ -31,6 +32,7 @@ export default function App() {
 
   const [fruitArr, setFruitArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
+  const [addressArr, setAddressArr] = useState([]);
 
   useEffect(() => {
     database.ref().child('Fruit').get().then((snapshot) => {
@@ -68,31 +70,32 @@ export default function App() {
         console.log(err);
       });
     });
+
+    // Address
+    database.ref().child('Address').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        // console.log('yang', Object.values(snapshot.val()));
+        setAddressArr(Object.values(snapshot.val())); 
+      } else {
+        console.log("No data available");
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
   },[]);
 
   return (
     <NativeRouter>
       <View style={styles.container}>
-        <View style={styles.nav}>
-          <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
-            <Text style={styles.navText}>Home</Text>
-          </Link>
-          <Link to="/about" underlayColor="#f0f4f7" style={styles.navItem}>
-            <Text style={styles.navText}>OrderCart</Text>
-          </Link>
-          <Link to="/topics" underlayColor="#f0f4f7" style={styles.navItem}>
-            <Text style={styles.navText}>MyInfo</Text>
-          </Link>
-        </View>
-
-        <Route exact path="/" render={() => <Home user={'Navana'} fruitList={fruitArr} />} />
+        <Route path="/" render={() => <LoginScreen />} />
+        <Route path="/home" render={() => <Home user={'Navana'} fruitList={fruitArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo />} />
         <Route path="/checkout" render={() => <Checkout />} />
         <Route path="/Account Information" render={() => <AccountInfo />} />
-        <Route path="/Address" render={() => <Address />} />
+        <Route path="/Address" render={() => <Address addressArr={addressArr} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
-        <Route path="/Favourite list" render={() => <FavouriteList />} />
+        <Route path="/Wish list" render={() => <FavouriteList />} />
         <Route path="/Order History" render={() => <OrderHistory />} />
       </View>
     </NativeRouter>
@@ -105,21 +108,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F6F8F9',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  nav: {
-    backgroundColor: '#FFF',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    height: 50,
-    width: '100%',
-    position: 'fixed',
-    bottom: 0,
-    boxShadow: '1px 2px 11px -1px rgba(100,84,84,0.75)',
-    alignItems: 'center',
-  },
-  navText: {
-    fontWeight: 'bold',
-    fontSize: 15
   }
 });
 

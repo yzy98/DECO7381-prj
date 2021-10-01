@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faEdit, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import MyButton from '../myButton';
+import MyGoBack from '../myGoBack';
 
 
 const visaIcon = require('./assets/visa.png');
@@ -123,6 +124,7 @@ const Checkout = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <MyGoBack />
         <Text style={{fontSize: 20, color: '#03045e'}}>Checkout</Text>
         <BagIcon />
       </View>
@@ -223,12 +225,13 @@ const PayCard = (props) => {
 const styles= StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 10,
-    width: '100%'
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#F6F8F9'
   },
   header: {
     position: 'relative',
-    top: 10,
+    marginTop: 20,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

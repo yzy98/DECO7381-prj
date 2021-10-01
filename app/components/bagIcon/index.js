@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { FontAwesomeIcon, } from '@fortawesome/react-native-fontawesome';
 import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 import { database } from '../../../App';
+import {Link} from 'react-router-native';
 
 const BagIcon = (props) => {
   const [num, setNum] = useState(0);
@@ -34,25 +35,27 @@ const BagIcon = (props) => {
   },[]);
 
   return (
-    <View style={{
-      width: 'fit-content'
-    }}> 
-      <FontAwesomeIcon icon={faShoppingBag} size={32} />
-      <Text style={{
-        backgroundColor: '#dc2f02',
-        color: '#FFF',
-        fontWeight: 'bold',
-        width: 15,
-        height: 15,
-        textAlign: 'center',
-        borderRadius: 7.5,
-        fontSize: 13,
-        position: 'absolute',
-        right: -1
-      }}>
-        {num}
-      </Text>
-    </View>
+    <Link to='/about'>
+      <View style={{
+        width: 'fit-content'
+      }}> 
+        <FontAwesomeIcon icon={faShoppingBag} size={32} />
+        <Text style={{
+          backgroundColor: '#dc2f02',
+          color: '#FFF',
+          fontWeight: 'bold',
+          width: 15,
+          height: 15,
+          textAlign: 'center',
+          borderRadius: 7.5,
+          fontSize: 13,
+          position: 'absolute',
+          right: -1
+        }}>
+          {num}
+        </Text>
+      </View>
+    </Link>
   );
 };
 

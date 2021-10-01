@@ -4,36 +4,32 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt, faHome, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import MyButton from '../myButton';
 import MyModal from '../myModal';
+import MyGoBack from '../myGoBack';
 
-const Address = () => {
+const Address = (props) => {
+  const {addressArr} = props;
   const [isModalShow, setModalShow] = useState(false);
 
   const handleBtnClick = () => {
     setModalShow(true);
   };
 
+  const addressBody = addressArr.map((address) => {
+    return <AddressCard name={address.name} phone={address.phone} location={address.location} isDeafult={address.default} />;
+  });
+
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>Address List</Text>
-        <AddressCard
-          name={'Navan Gomes'} 
-          phone={'0422343434'} 
-          location={'60 Tribune Street, South brisbane, QLD, 4105'}
-          isDeafult={true}
-        />
-        <AddressCard
-          name={'Lebron James'} 
-          phone={'0432185512'} 
-          location={'319 Vu;ture St, South Brisbane, QLD, 4101'}
-          isDeafult={false}
-        />
-        <AddressCard
-          name={'Ellis B J'} 
-          phone={'0732362438'} 
-          location={'293 North Qy, Brisbane, QLD, 4000'}
-          isDeafult={false}
-        />
+        <View style={styles.header}>
+          <MyGoBack />
+          <Text style={styles.title}>Address List</Text>
+          <FontAwesomeIcon icon={faTimesCircle} size={20} style={{ visibility: 'hidden' }} />
+        </View>
+        {addressArr.length > 0 
+          ? addressBody
+          : <Text>Opps...It looks like you have not added any address yet</Text>
+        }
         <View style={styles.btnContainer}>
           <MyButton title={'Add address'} click={handleBtnClick} />
         </View>
@@ -95,16 +91,22 @@ const AddressCard = (props) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 30,
+    height: '100%',
     width: '100%',
     paddingHorizontal: 20,
     backgroundColor: '#F6F8F9'
   },
+  header: {
+    marginVertical: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
   title: {
     fontSize: 20, 
     color: '#03045e',
-    textAlign: 'center',
-    marginBottom: 20
+    textAlign: 'center'
   },
   cardContainer: {
     display: 'flex',
