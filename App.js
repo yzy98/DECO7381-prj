@@ -33,11 +33,13 @@ export default function App() {
   const [fruitArr, setFruitArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
+  const [wishArr, setWishArr] = useState([]);
+  const [originWishObj, setOriginWishObj] = useState({});
 
   useEffect(() => {
     database.ref().child('Fruit').get().then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
+        // console.log(snapshot.val());
         setFruitArr(snapshot.val());
   
       } else {
@@ -52,7 +54,7 @@ export default function App() {
         // console.log(Object.values(snapshot.val()));
         setOrdersArr(Object.values(snapshot.val())); 
       } else {
-        console.log("No data available");
+        console.log("No order data available");
       }
     }).catch((err) => {
       console.log(err);
@@ -82,6 +84,50 @@ export default function App() {
     }).catch((err) => {
       console.log(err);
     });
+
+    // WishList
+    database.ref().child('WishList').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        // console.log('yang', Object.values(snapshot.val()));
+        setOriginWishObj(snapshot.val());
+        setWishArr(Object.values(snapshot.val())); 
+      } else {
+        console.log("No data1 available");
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    database.ref().child('WishList').on('child_added', () => {
+      database.ref().child('WishList').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          setOriginWishObj(snapshot.val());
+          setWishArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data2 available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+
+    database.ref().child('WishList').on('child_removed', () => {
+      database.ref().child('WishList').get().then((snapshot) => {
+        if (snapshot.exists()) {
+        // console.log('yang', Object.values(snapshot.val()));
+        setOriginWishObj(snapshot.val());
+        setWishArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data3 available");
+          setOriginWishObj({});
+          setWishArr([]);
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+
   },[]);
 
   return (
@@ -95,7 +141,7 @@ export default function App() {
         <Route path="/Account Information" render={() => <AccountInfo />} />
         <Route path="/Address" render={() => <Address addressArr={addressArr} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
-        <Route path="/Wish list" render={() => <FavouriteList />} />
+        <Route path="/Wish list" render={() => <FavouriteList wishList={wishArr} originWishObj={originWishObj} />} />
         <Route path="/Order History" render={() => <OrderHistory />} />
       </View>
     </NativeRouter>

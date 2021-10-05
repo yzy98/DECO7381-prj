@@ -30,7 +30,6 @@ const MyInfo = (props) => {
         <View style={styles.myAccount}>
           <AccountLi text={'Account Information'} icon={faUser} />
           <AccountLi text={'Address'} icon={faMapMarkerAlt} />
-          <AccountLi text={'Account & Card'} icon={faCreditCard} />
           <AccountLi text={'Wish list'} icon={faHeart} />
           <AccountLi text={'Order History'} icon={faSearchDollar} />
         </View>
