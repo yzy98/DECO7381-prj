@@ -103,7 +103,7 @@ const Header = (props) => {
 
 const styles = StyleSheet.create({
   nav: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#dc2f02',
     flexDirection: 'row',
     justifyContent: 'space-around',
     height: 50,
@@ -114,8 +114,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navText: {
-    fontWeight: 'bold',
-    fontSize: 15
+    fontWeight: 700,
+    fontSize: 16,
+    color: '#FFF'
   },
   container: {
     position: 'absolute',

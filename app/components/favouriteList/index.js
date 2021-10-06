@@ -59,6 +59,13 @@ const FavouriteList= (props) => {
 
   const handleAddToCart = () => {
     // call api with currentArr
+    // currently same as delete
+    deleteWishList(originWishObj, currentArr).then(() => {
+      // reset current manipulate array to []
+      setCurrentArr([]);
+    }).catch((err) => {
+      console.log(err);
+    });
   };
 
   const addArr = (obj) => {
