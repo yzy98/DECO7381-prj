@@ -1,6 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { database } from '../../../App';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Pressable} from 'react-native';
+import {database} from '../../../App';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHeart} from '@fortawesome/free-solid-svg-icons';
 
 async function addToCart(name, season, price) {
   return database.ref().child('OrderCart').push({name, season, price});
@@ -13,6 +15,7 @@ const blueberryImg = require('./images/bulueburries.png');
 
 const ProductCard = (props) => {
   const {name, season, price} = props;
+  const [InWish, setInWish] = useState(false);
 
   const handlePress = () => {
     addToCart(name, season, price).then(() => {
@@ -22,8 +25,19 @@ const ProductCard = (props) => {
     });
   };
 
+  const handlePressHeart = () => {
+    setInWish(prev => {
+      const currentIn = !prev;
+      return currentIn;
+    });
+    // call api to add wishlist
+  };
+
   return (
     <View style={styles.container}>
+      <Pressable style={styles.heartContainer} onPress={handlePressHeart}>
+        <FontAwesomeIcon style={styles.heart} color={InWish ? '#dc2f02' : 'grey'} icon={faHeart} size={25} />
+      </Pressable>
       <View style={styles.imgContainer} onResponderGrant={() => {console.log('Cliked!')}}>
         <Image style={styles.image} source={getImage(name)} />
       </View>
@@ -96,6 +110,14 @@ const styles = StyleSheet.create({
   plus: {
     width: 30,
     height: 30
+  },
+  heartContainer: {
+    zIndex: 999
+  },
+  heart: {
+    position: 'absolute',
+    right: -5,
+    top: -1
   }
 });
 
