@@ -24,7 +24,7 @@ const TypeOne = (props) => {
 
   const body = filteredFruitsArr.map((item) => {
     return (
-      <ProductCard name={item.Name} season={item.Season} price={item.Price} />
+      <ProductCard name={item.Name} season={item.Season} price={item.Price} id={item.id} description={item.Description} {...props} />
     );
   });
 

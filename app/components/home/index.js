@@ -69,7 +69,6 @@ const Home = (props) => {
           <View style={styles.bottomRight}>
             <View style={styles.bottomHeader}>
               <Text style={styles.bestPrice}>Best Price</Text>
-              <Text style={styles.seeAll}>See all</Text>
             </View>
             <ProductContainer typeCardOne={false} {...props} />
           </View>

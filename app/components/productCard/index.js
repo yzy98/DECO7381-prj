@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, Pressable} from 'react-native';
 import {database} from '../../../App';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -8,18 +8,29 @@ async function addToCart(name, season, price) {
   return database.ref().child('OrderCart').push({name, season, price});
 }
 
+async function addToWishList(id, name, description, price) {
+  return database.ref().child('WishList').push({id, "Name": name, "Description": description, "Price": price});
+}
+
 const appleImg = require('./images/apple.jpeg');
 const banannaImg = require('./images/banana.jpeg');
 const starwberryImg = require('./images/strawberry.png');
 const blueberryImg = require('./images/bulueburries.png');
 
 const ProductCard = (props) => {
-  const {name, season, price} = props;
+  const {name, season, price, id, description, wishList} = props;
   const [InWish, setInWish] = useState(false);
+
+  useEffect(() => {
+    if (Array.isArray(wishList) && wishList.filter(i => i.id === id).length > 0) {
+      setInWish(true);
+    }
+    console.log('yzng', wishList);
+  }, [wishList]);
 
   const handlePress = () => {
     addToCart(name, season, price).then(() => {
-      console.log('added to db');
+      console.log('added to OrderCart');
     }).catch((err) => {
       console.log(err);
     });
@@ -27,10 +38,20 @@ const ProductCard = (props) => {
 
   const handlePressHeart = () => {
     setInWish(prev => {
-      const currentIn = !prev;
-      return currentIn;
+      if (!prev) {
+        const currentIn = !prev;
+        addToWishList(id, name, description, price).then(() => {
+          console.log('added to wishList');
+        }).catch((err) => {
+          console.log(err);
+        });
+        return currentIn;
+      } else {
+        alert('Already exists in wish list!');
+        // can be replaced by myModal
+        return true;
+      }
     });
-    // call api to add wishlist
   };
 
   return (

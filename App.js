@@ -134,7 +134,7 @@ export default function App() {
     <NativeRouter>
       <View style={styles.container}>
         <Route path="/" render={() => <LoginScreen />} />
-        <Route path="/home" render={() => <Home user={'Navana'} fruitList={fruitArr} />} />
+        <Route path="/home" render={() => <Home user={'Navana'} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo />} />
         <Route path="/checkout" render={() => <Checkout />} />
