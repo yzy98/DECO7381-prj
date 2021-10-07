@@ -36,6 +36,8 @@ export default function App() {
   const [originAddressObj, setOriginAddressObj] = useState({});
   const [wishArr, setWishArr] = useState([]);
   const [originWishObj, setOriginWishObj] = useState({});
+  const [userArr, setUserArr] = useState([]);
+  const [originUserObj, setOriginUserObj] = useState({});
 
   useEffect(() => {
     database.ref().child('Fruit').get().then((snapshot) => {
@@ -48,6 +50,47 @@ export default function App() {
       }
     }).catch((err) => {
       console.log(err);
+    });
+
+    // User
+    database.ref().child('User').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        // console.log(Object.values(snapshot.val()));
+        setOriginUserObj(snapshot.val());
+        setUserArr(Object.values(snapshot.val()));
+      } else {
+        console.log("No order data available");
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    database.ref().child('User').on('child_added', () => {
+      database.ref().child('User').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(Object.values(snapshot.val()));
+          setOriginUserObj(snapshot.val());
+          setUserArr(Object.values(snapshot.val()));
+        } else {
+          console.log("No order data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+
+    database.ref().child('User').on('child_changed', () => {
+      database.ref().child('User').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(Object.values(snapshot.val()));
+          setOriginUserObj(snapshot.val());
+          setUserArr(Object.values(snapshot.val()));
+        } else {
+          console.log("No order data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
     });
 
     database.ref().child('OrderCart').get().then((snapshot) => {
@@ -165,7 +208,7 @@ export default function App() {
   return (
     <NativeRouter>
       <View style={styles.container}>
-        <Route path="/" render={() => <LoginScreen />} />
+        <Route path="/" render={() => <LoginScreen userArr={userArr} originUserObj={originUserObj} />} />
         <Route path="/home" render={() => <Home user={'Navana'} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo />} />
