@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 const MyModal = (props) => {
-  const {title, content, isVisible, setVisible} = props;
+  const {title, content, isVisible, setVisible, onSave} = props;
 
   return (
     <Modal
@@ -28,7 +28,7 @@ const MyModal = (props) => {
           <View style={styles.btnRow}>
             <Button 
               onPress={() => {
-                // call api to save data
+                onSave();
                 setVisible(false);
               }} 
               title='save'

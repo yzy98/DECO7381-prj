@@ -45,8 +45,8 @@ const FavouriteList= (props) => {
   const [currentArr, setCurrentArr] = useState([]);
 
   // useEffect(() => {
-  //   console.log('originWishObj', originWishObj);
-  // }, [originWishObj]);
+  //   console.log('wishList', wishList);
+  // }, [wishList]);
 
   const handleDelete = () => {
     deleteWishList(originWishObj, currentArr).then(() => {

@@ -33,6 +33,7 @@ export default function App() {
   const [fruitArr, setFruitArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
+  const [originAddressObj, setOriginAddressObj] = useState({});
   const [wishArr, setWishArr] = useState([]);
   const [originWishObj, setOriginWishObj] = useState({});
 
@@ -77,12 +78,43 @@ export default function App() {
     database.ref().child('Address').get().then((snapshot) => {
       if (snapshot.exists()) {
         // console.log('yang', Object.values(snapshot.val()));
+        setOriginAddressObj(snapshot.val());
         setAddressArr(Object.values(snapshot.val())); 
       } else {
         console.log("No data available");
       }
     }).catch((err) => {
       console.log(err);
+    });
+
+    database.ref().child('Address').on('child_added', () => {
+      database.ref().child('Address').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          setOriginAddressObj(snapshot.val());
+          setAddressArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+
+    database.ref().child('Address').on('child_removed', () => {
+      database.ref().child('Address').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          setOriginAddressObj(snapshot.val());
+          setAddressArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data available");
+          setOriginAddressObj({});
+          setAddressArr([]);
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
     });
 
     // WishList
@@ -139,7 +171,7 @@ export default function App() {
         <Route path="/topics" render={() => <MyInfo />} />
         <Route path="/checkout" render={() => <Checkout />} />
         <Route path="/Account Information" render={() => <AccountInfo />} />
-        <Route path="/Address" render={() => <Address addressArr={addressArr} />} />
+        <Route path="/Address" render={() => <Address addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
         <Route path="/Wish list" render={() => <FavouriteList wishList={wishArr} originWishObj={originWishObj} />} />
         <Route path="/Order History" render={() => <OrderHistory />} />
