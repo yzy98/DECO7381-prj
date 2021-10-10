@@ -20,7 +20,7 @@ const MyInfo = (props) => {
         <View style={styles.header}>
           <MyGoBack />
           <Text style={{fontSize: 20, color: '#03045e'}}>Profile</Text>
-          <BagIcon />
+          <BagIcon {...props} />
         </View>
         <View style={styles.avator}>
           <FontAwesomeIcon icon={faUserCircle} size={100} />

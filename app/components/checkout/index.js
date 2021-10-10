@@ -106,7 +106,7 @@ fetch(authUrl, {
     console.log("couldn't get auth token");
 });
 
-const Checkout = () => {
+const Checkout = (props) => {
   const location = useLocation();
   const {totalCost} = location.state;
   const [currentPay, setCurrentPay] = useState('visa');
@@ -126,7 +126,7 @@ const Checkout = () => {
       <View style={styles.header}>
         <MyGoBack />
         <Text style={{fontSize: 20, color: '#03045e'}}>Checkout</Text>
-        <BagIcon />
+        <BagIcon {...props} />
       </View>
       <View style={styles.detail}>
         <Text style={{fontSize: 20, color: '#03045e'}}>Payment Details</Text>

@@ -30,6 +30,8 @@ const database = firebase.database();
 
 export default function App() {
 
+  const [userKey, setUserKey] = useState('');
+  const [userName, setUserName] = useState('');
   const [fruitArr, setFruitArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
   const [addressArr, setAddressArr] = useState([]);
@@ -39,7 +41,153 @@ export default function App() {
   const [userArr, setUserArr] = useState([]);
   const [originUserObj, setOriginUserObj] = useState({});
 
+  // set current user key from login
+  const handleSetUserKey = (newKey) => {
+    setUserKey(newKey);
+  };
+
+  // get user info according to the key
   useEffect(() => {
+    if (userKey !== '') {
+
+      database.ref().child('User').child(userKey).get().then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log('userdata', snapshot.val());
+        } else {
+          console.log("No order data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+
+      // Name
+      database.ref().child('User').child(userKey).child('Name').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(Object.values(snapshot.val()));
+          setUserName(snapshot.val());
+        } else {
+          console.log("No order data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+
+      // Order cart
+      database.ref().child('User').child(userKey).child('OrderCart').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(Object.values(snapshot.val()));
+          setOrdersArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No order data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+  
+      database.ref().child('User').child(userKey).child('OrderCart').on('child_added',() => {
+        database.ref().child('User').child(userKey).child('OrderCart').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log(Object.values(snapshot.val()));
+            setOrdersArr(Object.values(snapshot.val()));   
+          } else {
+            console.log("No data available");
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+
+      // Address
+      database.ref().child('User').child(userKey).child('Address').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          setOriginAddressObj(snapshot.val());
+          setAddressArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+  
+      database.ref().child('User').child(userKey).child('Address').on('child_added', () => {
+        database.ref().child('User').child(userKey).child('Address').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log('yang', Object.values(snapshot.val()));
+            setOriginAddressObj(snapshot.val());
+            setAddressArr(Object.values(snapshot.val())); 
+          } else {
+            console.log("No data available");
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+  
+      database.ref().child('User').child(userKey).child('Address').on('child_removed', () => {
+        database.ref().child('User').child(userKey).child('Address').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log('yang', Object.values(snapshot.val()));
+            setOriginAddressObj(snapshot.val());
+            setAddressArr(Object.values(snapshot.val())); 
+          } else {
+            console.log("No data available");
+            setOriginAddressObj({});
+            setAddressArr([]);
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+
+      // wishlist
+      database.ref().child('User').child(userKey).child('WishList').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          setOriginWishObj(snapshot.val());
+          setWishArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data1 available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+  
+      database.ref().child('User').child(userKey).child('WishList').on('child_added', () => {
+        database.ref().child('User').child(userKey).child('WishList').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log('yang', Object.values(snapshot.val()));
+            setOriginWishObj(snapshot.val());
+            setWishArr(Object.values(snapshot.val())); 
+          } else {
+            console.log("No data2 available");
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+  
+      database.ref().child('User').child(userKey).child('WishList').on('child_removed', () => {
+        database.ref().child('User').child(userKey).child('WishList').get().then((snapshot) => {
+          if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          setOriginWishObj(snapshot.val());
+          setWishArr(Object.values(snapshot.val())); 
+          } else {
+            console.log("No data3 available");
+            setOriginWishObj({});
+            setWishArr([]);
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+      // order history
+    }
+  }, [userKey]);
+
+  useEffect(() => {
+    // Fruit
     database.ref().child('Fruit').get().then((snapshot) => {
       if (snapshot.exists()) {
         // console.log(snapshot.val());
@@ -93,130 +241,20 @@ export default function App() {
       });
     });
 
-    database.ref().child('OrderCart').get().then((snapshot) => {
-      if (snapshot.exists()) {
-        // console.log(Object.values(snapshot.val()));
-        setOrdersArr(Object.values(snapshot.val())); 
-      } else {
-        console.log("No order data available");
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-
-    database.ref().child('OrderCart').on('child_added',() => {
-      database.ref().child('OrderCart').get().then((snapshot) => {
-        if (snapshot.exists()) {
-          // console.log(Object.values(snapshot.val()));
-          setOrdersArr(Object.values(snapshot.val()));   
-        } else {
-          console.log("No data available");
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-
-    // Address
-    database.ref().child('Address').get().then((snapshot) => {
-      if (snapshot.exists()) {
-        // console.log('yang', Object.values(snapshot.val()));
-        setOriginAddressObj(snapshot.val());
-        setAddressArr(Object.values(snapshot.val())); 
-      } else {
-        console.log("No data available");
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-
-    database.ref().child('Address').on('child_added', () => {
-      database.ref().child('Address').get().then((snapshot) => {
-        if (snapshot.exists()) {
-          // console.log('yang', Object.values(snapshot.val()));
-          setOriginAddressObj(snapshot.val());
-          setAddressArr(Object.values(snapshot.val())); 
-        } else {
-          console.log("No data available");
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-
-    database.ref().child('Address').on('child_removed', () => {
-      database.ref().child('Address').get().then((snapshot) => {
-        if (snapshot.exists()) {
-          // console.log('yang', Object.values(snapshot.val()));
-          setOriginAddressObj(snapshot.val());
-          setAddressArr(Object.values(snapshot.val())); 
-        } else {
-          console.log("No data available");
-          setOriginAddressObj({});
-          setAddressArr([]);
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-
-    // WishList
-    database.ref().child('WishList').get().then((snapshot) => {
-      if (snapshot.exists()) {
-        // console.log('yang', Object.values(snapshot.val()));
-        setOriginWishObj(snapshot.val());
-        setWishArr(Object.values(snapshot.val())); 
-      } else {
-        console.log("No data1 available");
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-
-    database.ref().child('WishList').on('child_added', () => {
-      database.ref().child('WishList').get().then((snapshot) => {
-        if (snapshot.exists()) {
-          // console.log('yang', Object.values(snapshot.val()));
-          setOriginWishObj(snapshot.val());
-          setWishArr(Object.values(snapshot.val())); 
-        } else {
-          console.log("No data2 available");
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-
-    database.ref().child('WishList').on('child_removed', () => {
-      database.ref().child('WishList').get().then((snapshot) => {
-        if (snapshot.exists()) {
-        // console.log('yang', Object.values(snapshot.val()));
-        setOriginWishObj(snapshot.val());
-        setWishArr(Object.values(snapshot.val())); 
-        } else {
-          console.log("No data3 available");
-          setOriginWishObj({});
-          setWishArr([]);
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-
   },[]);
 
   return (
     <NativeRouter>
       <View style={styles.container}>
-        <Route path="/" render={() => <LoginScreen userArr={userArr} originUserObj={originUserObj} />} />
-        <Route path="/home" render={() => <Home user={'Navana'} fruitList={fruitArr} wishList={wishArr} />} />
+        <Route path="/" render={() => <LoginScreen userArr={userArr} originUserObj={originUserObj} setUserKey={handleSetUserKey} />} />
+        <Route path="/home" render={() => <Home user={userName} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
-        <Route path="/topics" render={() => <MyInfo />} />
-        <Route path="/checkout" render={() => <Checkout />} />
+        <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} />} />
+        <Route path="/checkout" render={() => <Checkout ordersArr={ordersArr} />} />
         <Route path="/Account Information" render={() => <AccountInfo />} />
-        <Route path="/Address" render={() => <Address addressList={addressArr} originAddressObj={originAddressObj} />} />
+        <Route path="/Address" render={() => <Address userKey={userKey} addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
-        <Route path="/Wish list" render={() => <FavouriteList wishList={wishArr} originWishObj={originWishObj} />} />
+        <Route path="/Wish list" render={() => <FavouriteList userKey={userKey} wishList={wishArr} originWishObj={originWishObj} />} />
         <Route path="/Order History" render={() => <OrderHistory />} />
       </View>
     </NativeRouter>

@@ -24,10 +24,10 @@ const getImage = (name) => {
   }
 };
 
-const deleteWishList = async (originObj, objArr) => {
+const deleteWishList = async (userKey, originObj, objArr) => {
   objArr.forEach(element => {
     const childKey = getKeyByValue(originObj, element);
-    return database.ref().child('WishList').child(childKey).remove();
+    return database.ref().child('User').child(userKey).child('WishList').child(childKey).remove();
   });
 };
 
@@ -41,7 +41,7 @@ const FavouriteList= (props) => {
   //   {"id": 2, "Name": "Banana", "Description": "Decilious banana", "Price": 7},
   //   {"id": 3, "Name": "strawberry", "Description": "Decilious strawberry", "Price": 6},
   // ];
-  const {wishList, originWishObj} = props;
+  const {wishList, originWishObj, userKey} = props;
   const [currentArr, setCurrentArr] = useState([]);
 
   // useEffect(() => {
@@ -49,7 +49,7 @@ const FavouriteList= (props) => {
   // }, [wishList]);
 
   const handleDelete = () => {
-    deleteWishList(originWishObj, currentArr).then(() => {
+    deleteWishList(userKey, originWishObj, currentArr).then(() => {
       // reset current manipulate array to []
       setCurrentArr([]);
     }).catch((err) => {
@@ -60,7 +60,7 @@ const FavouriteList= (props) => {
   const handleAddToCart = () => {
     // call api with currentArr
     // currently same as delete
-    deleteWishList(originWishObj, currentArr).then(() => {
+    deleteWishList(userKey, originWishObj, currentArr).then(() => {
       // reset current manipulate array to []
       setCurrentArr([]);
     }).catch((err) => {

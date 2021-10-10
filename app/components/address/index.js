@@ -8,14 +8,14 @@ import MyGoBack from '../myGoBack';
 import {database} from '../../../App';
 import uniqid from 'uniqid';
 
-const addAddress = async (name, phone, location) => {
+const addAddress = async (userKey, name, phone, location) => {
   const id = uniqid();
-  return database.ref().child('Address').push({id, name, phone, location, "default": false});
+  return database.ref().child('User').child(userKey).child('Address').push({id, name, phone, location, "default": false});
 };
 
-const deleteAddress = async (originObj, obj) => {
+const deleteAddress = async (userKey, originObj, obj) => {
   const childKey = getKeyByValue(originObj, obj);
-  return database.ref().child('Address').child(childKey).remove();
+  return database.ref().child('User').child(userKey).child('Address').child(childKey).remove();
 };
 
 const getKeyByValue = (obj, value) => {
@@ -23,7 +23,7 @@ const getKeyByValue = (obj, value) => {
 };
 
 const Address = (props) => {
-  const {addressList} = props;
+  const {addressList, userKey} = props;
   const [isModalShow, setModalShow] = useState(false);
   const [currentAddress, setCurrentAddress] = useState({});
 
@@ -33,7 +33,7 @@ const Address = (props) => {
 
   const handleAddAddress = () => {
     // alert('address added');
-    addAddress(currentAddress.name, currentAddress.phone, currentAddress.location).then(() => {
+    addAddress(userKey, currentAddress.name, currentAddress.phone, currentAddress.location).then(() => {
       console.log('added to address');
     }).catch((err) => {
       console.log(err);
@@ -161,13 +161,13 @@ const AddressInput = (props) => {
 };
 
 const AddressCard = (props) => {
-  const {id, name, phone, location, isDeafult, originAddressObj} = props;
+  const {id, name, phone, location, isDeafult, originAddressObj, userKey} = props;
   const [isDelete, setDelete] = useState(false);
 
   const handleDelete = () => {
     setDelete(true);
     // call api here
-    deleteAddress(originAddressObj, {id, name, phone, location, "default": isDeafult}).then(() => {
+    deleteAddress(userKey, originAddressObj, {id, name, phone, location, "default": isDeafult}).then(() => {
       console.log('deleted');
     }).catch((err) => {
       console.log(err);

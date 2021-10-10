@@ -40,7 +40,7 @@ const getKeyByValue = (obj, value) => {
 };
 
 const LoginScreen = (props) => {
-  const {userArr, originUserObj} = props;
+  const {userArr, originUserObj, setUserKey} = props;
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [userObj, setUserObj] = useState({});
@@ -76,6 +76,7 @@ const LoginScreen = (props) => {
       } else {
         setAccountTrue(true);
         setPwdTrue(true);
+        setUserKey(userKey);
         setLink('/home');
         setUserObj({});
       }

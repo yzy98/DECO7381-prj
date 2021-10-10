@@ -27,7 +27,7 @@ const Home = (props) => {
           paddingRight: 20,
           paddingTop: 20
         }}>
-          <BagIcon />
+          <BagIcon {...props} />
         </View>
         <Header {...props} />
         <View style={styles.searchFilter}>

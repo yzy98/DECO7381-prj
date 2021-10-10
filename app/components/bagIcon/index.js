@@ -6,33 +6,34 @@ import { database } from '../../../App';
 import {Link} from 'react-router-native';
 
 const BagIcon = (props) => {
-  const [num, setNum] = useState(0);
+  const {ordersArr} = props;
+  // const [num, setNum] = useState(0);
 
-  useEffect(() => {
-    database.ref().child('OrderCart').get().then((snapshot) => {
-      if (snapshot.exists()) {
-        setNum(Object.keys(snapshot.val()).length);   
-      } else {
-        console.log("No data available");
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
+  // useEffect(() => {
+  //   database.ref().child('OrderCart').get().then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       setNum(Object.keys(snapshot.val()).length);   
+  //     } else {
+  //       console.log("No data available");
+  //     }
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
 
-    database.ref().child('OrderCart').on('child_added',() => {
-      database.ref().child('OrderCart').get().then((snapshot) => {
-        if (snapshot.exists()) {
-          // console.log(Object.keys(snapshot.val()).length);
-          // console.log(snapshot.val());
-          setNum(Object.keys(snapshot.val()).length);   
-        } else {
-          console.log("No data available");
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-  },[]);
+  //   database.ref().child('OrderCart').on('child_added',() => {
+  //     database.ref().child('OrderCart').get().then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         // console.log(Object.keys(snapshot.val()).length);
+  //         // console.log(snapshot.val());
+  //         setNum(Object.keys(snapshot.val()).length);   
+  //       } else {
+  //         console.log("No data available");
+  //       }
+  //     }).catch((err) => {
+  //       console.log(err);
+  //     });
+  //   });
+  // },[]);
 
   return (
     <Link to='/about'>
@@ -52,7 +53,7 @@ const BagIcon = (props) => {
           position: 'absolute',
           right: -1
         }}>
-          {num}
+          {Array.isArray(ordersArr) ? ordersArr.length : 0}
         </Text>
       </View>
     </Link>

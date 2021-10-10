@@ -35,7 +35,7 @@ const OrderCart = (props) => {
         <View style={styles.header}>
           <MyGoBack />
           <Text style={{fontSize: 20, color: '#03045e'}}>Your Cart</Text>
-          <BagIcon />
+          <BagIcon {...props} />
         </View>
         <View style={styles.body}>
           <ScrollView style={styles.cartContainer}>

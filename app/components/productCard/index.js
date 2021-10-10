@@ -4,12 +4,12 @@ import {database} from '../../../App';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHeart} from '@fortawesome/free-solid-svg-icons';
 
-async function addToCart(name, season, price) {
-  return database.ref().child('OrderCart').push({name, season, price});
+async function addToCart(userKey, name, season, price) {
+  return database.ref().child('User').child(userKey).child('OrderCart').push({name, season, price});
 }
 
-async function addToWishList(id, name, description, price) {
-  return database.ref().child('WishList').push({id, "Name": name, "Description": description, "Price": price});
+async function addToWishList(userKey, id, name, description, price) {
+  return database.ref().child('User').child(userKey).child('WishList').push({id, "Name": name, "Description": description, "Price": price});
 }
 
 const appleImg = require('./images/apple.jpeg');
@@ -18,7 +18,7 @@ const starwberryImg = require('./images/strawberry.png');
 const blueberryImg = require('./images/bulueburries.png');
 
 const ProductCard = (props) => {
-  const {name, season, price, id, description, wishList} = props;
+  const {name, season, price, id, description, wishList, userKey} = props;
   const [InWish, setInWish] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const ProductCard = (props) => {
   }, [wishList]);
 
   const handlePress = () => {
-    addToCart(name, season, price).then(() => {
+    addToCart(userKey, name, season, price).then(() => {
       console.log('added to OrderCart');
     }).catch((err) => {
       console.log(err);
@@ -40,7 +40,7 @@ const ProductCard = (props) => {
     setInWish(prev => {
       if (!prev) {
         const currentIn = !prev;
-        addToWishList(id, name, description, price).then(() => {
+        addToWishList(userKey, id, name, description, price).then(() => {
           console.log('added to wishList');
         }).catch((err) => {
           console.log(err);
