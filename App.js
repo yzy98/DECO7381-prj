@@ -2,6 +2,7 @@ import React, {useState, useEffect, Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {NativeRouter, Route, Link} from "react-router-native";
 import LoginScreen from './app/components/login';
+import RegisterScreen from './app/components/register';
 import Home from './app/components/home';
 import OrderCart from './app/components/orderCart';
 import MyInfo from './app/components/myInfo';
@@ -247,6 +248,7 @@ export default function App() {
     <NativeRouter>
       <View style={styles.container}>
         <Route path="/" render={() => <LoginScreen userArr={userArr} originUserObj={originUserObj} setUserKey={handleSetUserKey} />} />
+        <Route path="/register" render={() => <RegisterScreen />} />
         <Route path="/home" render={() => <Home user={userName} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
         <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} />} />

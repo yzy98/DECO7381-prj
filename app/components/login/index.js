@@ -119,8 +119,11 @@ const LoginScreen = (props) => {
           />
           {pwdTrue ? <FontAwesomeIcon icon={faCheckCircle} color={'green'} size={20} /> : <FontAwesomeIcon icon={faTimesCircle} color={'red'} size={20} />}
         </View>
-        <Link to={toLink} style={{width: 'fit-content'}}>
-          <Text>Log in</Text>
+        <Link to={toLink} style={styles.btnContainer}>
+          <Text style={styles.btnText}>Log in</Text>
+        </Link>
+        <Link to={'/register'} style={styles.btnContainer}>
+          <Text style={styles.btnText}>Register now</Text>
         </Link>
       </View>
     </View>
@@ -138,7 +141,10 @@ const styles= StyleSheet.create({
     backgroundColor: '#F6F8F9'
   },
   loginContainer: {
-
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   row: {
     display: 'flex',
@@ -150,6 +156,21 @@ const styles= StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  btnContainer: {
+    backgroundColor: '#03045e',
+    borderRadius: 15,
+    boxShadow: '1px 2px 11px -1px rgba(21,17,17,0.75)',
+    height: 40,
+    width: 150,
+    textAlign: 'center',
+    justifyContent: 'center',
+    marginVertical: 10
+  },
+  btnText: {
+    color: '#F6F8F9',
+    fontSize: 16,
+    textAlign: 'center'
   }
 });
 

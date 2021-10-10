@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 const MyModal = (props) => {
-  const {title, content, isVisible, setVisible, onSave} = props;
+  const {title, content, isVisible, setVisible, onSave, saveText, noClose} = props;
 
   return (
     <Modal
@@ -15,14 +15,16 @@ const MyModal = (props) => {
     >
       <View style={styles.overlay}>
         <View style={styles.modal}>
-          <Pressable 
-            style={styles.close}
-            onPress={() => {
-              setVisible(false);
-            }}
-          >
-            <FontAwesomeIcon icon={faTimes} size={20} />
-          </Pressable>
+          {!noClose &&
+            <Pressable 
+              style={styles.close}
+              onPress={() => {
+                setVisible(false);
+              }}
+            >
+              <FontAwesomeIcon icon={faTimes} size={20} />
+            </Pressable>
+          }
           <Text style={styles.title}>{title}</Text>
           {content}
           <View style={styles.btnRow}>
@@ -31,7 +33,7 @@ const MyModal = (props) => {
                 onSave();
                 setVisible(false);
               }} 
-              title='save'
+              title={saveText ? saveText : 'save'}
             />
           </View>    
         </View>
