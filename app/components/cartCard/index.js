@@ -9,12 +9,12 @@ const starwberryImg = require('../productCard/images/strawberry.png');
 const blueberryImg = require('../productCard/images/bulueburries.png');
 
 const CartCard = (props) => {
-  const {name, price, addPrice, minPrice} = props;
+  const {id, name, price, addPrice, minPrice} = props;
   const [selected, setSelected] = useState(false);
 
   const handleSelect = () => {
     setSelected(prevSlt => !prevSlt);
-    !selected ? addPrice(price): minPrice(price);
+    !selected ? addPrice(id, name, price): minPrice(id, name, price);
   };
 
   return (

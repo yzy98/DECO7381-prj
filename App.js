@@ -35,6 +35,7 @@ export default function App() {
   const [userName, setUserName] = useState('');
   const [fruitArr, setFruitArr] = useState([]);
   const [ordersArr, setOrdersArr] = useState([]);
+  const [originOrderCartObj, setOriginOrderCartObj] = useState({});
   const [addressArr, setAddressArr] = useState([]);
   const [originAddressObj, setOriginAddressObj] = useState({});
   const [wishArr, setWishArr] = useState([]);
@@ -79,6 +80,7 @@ export default function App() {
       database.ref().child('User').child(userKey).child('OrderCart').get().then((snapshot) => {
         if (snapshot.exists()) {
           // console.log(Object.values(snapshot.val()));
+          setOriginOrderCartObj(snapshot.val());
           setOrdersArr(Object.values(snapshot.val())); 
         } else {
           console.log("No order data available");
@@ -91,6 +93,21 @@ export default function App() {
         database.ref().child('User').child(userKey).child('OrderCart').get().then((snapshot) => {
           if (snapshot.exists()) {
             // console.log(Object.values(snapshot.val()));
+            setOriginOrderCartObj(snapshot.val());
+            setOrdersArr(Object.values(snapshot.val()));   
+          } else {
+            console.log("No data available");
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+
+      database.ref().child('User').child(userKey).child('OrderCart').on('child_removed',() => {
+        database.ref().child('User').child(userKey).child('OrderCart').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log(Object.values(snapshot.val()));
+            setOriginOrderCartObj(snapshot.val());
             setOrdersArr(Object.values(snapshot.val()));   
           } else {
             console.log("No data available");
@@ -186,6 +203,31 @@ export default function App() {
         });
       });
       // order history
+      database.ref().child('User').child(userKey).child('OrderHistory').get().then((snapshot) => {
+        if (snapshot.exists()) {
+          // console.log('yang', Object.values(snapshot.val()));
+          // setOriginWishObj(snapshot.val());
+          // setWishArr(Object.values(snapshot.val())); 
+        } else {
+          console.log("No data1 available");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+  
+      database.ref().child('User').child(userKey).child('OrderHistory').on('child_added', () => {
+        database.ref().child('User').child(userKey).child('OrderHistory').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log('yang', Object.values(snapshot.val()));
+            // setOriginWishObj(snapshot.val());
+            // setWishArr(Object.values(snapshot.val())); 
+          } else {
+            console.log("No data2 available");
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
     }
   }, [userKey]);
 
@@ -252,9 +294,9 @@ export default function App() {
         <Route path="/" render={() => <LoginScreen userArr={userArr} originUserObj={originUserObj} setUserKey={handleSetUserKey} />} />
         <Route path="/register" render={() => <RegisterScreen />} />
         <Route path="/home" render={() => <Home user={userName} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
-        <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
+        <Route path="/about" render={() => <OrderCart userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} />} />
         <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} userObj={currentUserObj} />} />
-        <Route path="/checkout" render={() => <Checkout ordersArr={ordersArr} />} />
+        <Route path="/checkout" render={() => <Checkout userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} />} />
         <Route path="/Account Information" render={() => <AccountInfo userObj={currentUserObj} />} />
         <Route path="/Address" render={() => <Address userKey={userKey} addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />

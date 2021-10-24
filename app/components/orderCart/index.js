@@ -2,30 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Button, ScrollView } from 'react-native';
 import BagIcon from '../bagIcon';
 import CartCard from '../cartCard';
-import Radio from '../radio';
 import {Link} from "react-router-native";
 import MyGoBack from '../myGoBack';
 
 const OrderCart = (props) => {
-  const {ordersArr} = props;
+  const {ordersArr, originOrderCartObj} = props;
   const [totalCost, setTotalCost] = useState(0);
-  const [selectAll, setSelectAll] = useState(false);
+  const [selectedOrderArr, setSelectedOrderArr] = useState([]);
 
-  const handleSelectAll = () => {
-    setSelectAll(prevSlt => !prevSlt);
+  const addPrice = (id, name, price) => {
+    setTotalCost(prevTotal => prevTotal + price);
+    setSelectedOrderArr(prev => {
+      const newArr = prev.concat({id, name, price});
+      return newArr;
+    });
   };
 
-  const addPrice = (p) => {
-    setTotalCost(prevTotal => prevTotal + p);
-  };
-
-  const minPrice = (p) => {
-    setTotalCost(prevTotal => prevTotal - p);
+  const minPrice = (id, name, price) => {
+    setTotalCost(prevTotal => prevTotal - price);
+    setSelectedOrderArr(prev => {
+      const newArr = prev.filter(item => item.id !== id);
+      return newArr;
+    });
   }
 
   const body = ordersArr.map((item) => {
     return (
-      <CartCard name={item.name} price={item.price} addPrice={addPrice} minPrice={minPrice} />
+      <CartCard id={item.id} name={item.name} price={item.price} addPrice={addPrice} minPrice={minPrice} />
     );
   });
 
@@ -44,15 +47,6 @@ const OrderCart = (props) => {
           <View style={{
             display: 'flex',
             flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 20
-          }}>
-            <Radio selected={selectAll} handleSelect={handleSelectAll} />
-            <Text style={styles.font}>Select all</Text>
-          </View>
-          <View style={{
-            display: 'flex',
-            flexDirection: 'row',
             justifyContent: 'space-between',
             marginTop: 10,
             marginBottom: 20
@@ -64,7 +58,7 @@ const OrderCart = (props) => {
         <Link 
           to={{
             pathname: "/checkout",
-            state: {totalCost: totalCost}
+            state: {totalCost: totalCost, selectedOrderArr: selectedOrderArr}
           }}
           style={{
             alignItems: 'center'

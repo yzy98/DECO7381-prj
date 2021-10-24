@@ -4,8 +4,8 @@ import {database} from '../../../App';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHeart} from '@fortawesome/free-solid-svg-icons';
 
-async function addToCart(userKey, name, season, price) {
-  return database.ref().child('User').child(userKey).child('OrderCart').push({name, season, price});
+async function addToCart(userKey, name, season, price, id) {
+  return database.ref().child('User').child(userKey).child('OrderCart').push({name, season, price, id});
 }
 
 async function addToWishList(userKey, id, name, description, price) {
@@ -29,7 +29,7 @@ const ProductCard = (props) => {
   }, [wishList]);
 
   const handlePress = () => {
-    addToCart(userKey, name, season, price).then(() => {
+    addToCart(userKey, name, season, price, id).then(() => {
       console.log('added to OrderCart');
     }).catch((err) => {
       console.log(err);

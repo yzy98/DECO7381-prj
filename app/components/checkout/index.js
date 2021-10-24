@@ -5,12 +5,33 @@ import BagIcon from '../bagIcon';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faEdit, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
-import MyButton from '../myButton';
 import MyGoBack from '../myGoBack';
-import PayPalCheckout from 'react-paypal-checkout-button'
+import PayPalCheckout from 'react-paypal-checkout-button';
+import {useHistory} from "react-router-native";
+import {database} from '../../../App';
+import uniqid from 'uniqid';
+
+const addToOrderHistory = async (userKey, objArr, status, time) => {
+  objArr.forEach(element => {
+    const id = uniqid();
+    return database.ref().child('User').child(userKey).child('OrderHistory').push({id, Name: element.name, Paid: element.price, Status: status, Time: time});
+  });
+};
+
+const deleteOrderCart = async (userKey, originObj, objArr) => {
+  objArr.forEach(element => {
+    const childKey = getKeyByValue(originObj, element);
+    return database.ref().child('User').child(userKey).child('OrderCart').child(childKey).remove();
+  });
+};
+
+const getKeyByValue = (obj, value) => {
+  return Object.keys(obj).find(key => obj[key].id === value.id);
+};
 
 const PaypalBtn = (props) => {
-  const {totalAmount} = props;
+  const {totalAmount, userKey, originOrderCartObj, selectedOrderArr} = props;
+  const history = useHistory();
 
   return (
     <PayPalCheckout 
@@ -20,6 +41,18 @@ const PaypalBtn = (props) => {
       onSuccess={(data, order) => {
         console.log('data', data);
         console.log('order', order);
+        deleteOrderCart(userKey, originOrderCartObj, selectedOrderArr).then(() => {
+          console.log('deleted!');
+        }).catch((err) => {
+          console.log(err);
+        });
+
+        addToOrderHistory(userKey, selectedOrderArr, order.status, order.update_time).then(() => {
+          console.log('added');
+        }).catch((err) => {
+          console.log(err);
+        })
+        history.goBack();
       }}
       onError={(error) => {
         console.log(error)
@@ -40,8 +73,9 @@ const unionPayIcon = require('./assets/unionpay.png');
 const clientId = "AR4-nctm9jSuj4MLysnPFfKtwTYXpp__uq13O3_Kw1yaBG-h-NE_0KbYmsiSanu26HI1coxko2ZWdWID";
 
 const Checkout = (props) => {
+  const {userKey, originOrderCartObj} = props;
   const location = useLocation();
-  const {totalCost} = location.state;
+  const {totalCost, selectedOrderArr} = location.state;
   const [currentPay, setCurrentPay] = useState('visa');
 
   const paySelect = (name) => {
@@ -98,7 +132,7 @@ const Checkout = (props) => {
           <FontAwesomeIcon icon={faEdit} color={'grey'} size={20} />
         </View>
         <View style={styles.btnContainer}>
-          {currentPay === 'paypal' ? <PaypalBtn totalAmount={totalCost + 20} /> : <Text style={styles.sorry}>Sorry, this payment method has not been supported, please try other methods...</Text>}
+          {currentPay === 'paypal' ? <PaypalBtn totalAmount={totalCost + 20} userKey={userKey} originOrderCartObj={originOrderCartObj} selectedOrderArr={selectedOrderArr} /> : <Text style={styles.sorry}>Sorry, this payment method has not been supported, please try other methods...</Text>}
         </View>
       </View>
     </View>
