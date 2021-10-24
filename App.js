@@ -43,6 +43,7 @@ export default function App() {
   const [userArr, setUserArr] = useState([]);
   const [originUserObj, setOriginUserObj] = useState({});
   const [currentUserObj, setCurrentUserObj] = useState({});
+  const [orderHistoryArr, setOrderHistoryArr] = useState([]);
 
   // set current user key from login
   const handleSetUserKey = (newKey) => {
@@ -206,8 +207,7 @@ export default function App() {
       database.ref().child('User').child(userKey).child('OrderHistory').get().then((snapshot) => {
         if (snapshot.exists()) {
           // console.log('yang', Object.values(snapshot.val()));
-          // setOriginWishObj(snapshot.val());
-          // setWishArr(Object.values(snapshot.val())); 
+          setOrderHistoryArr(Object.values(snapshot.val()));
         } else {
           console.log("No data1 available");
         }
@@ -219,8 +219,7 @@ export default function App() {
         database.ref().child('User').child(userKey).child('OrderHistory').get().then((snapshot) => {
           if (snapshot.exists()) {
             // console.log('yang', Object.values(snapshot.val()));
-            // setOriginWishObj(snapshot.val());
-            // setWishArr(Object.values(snapshot.val())); 
+            setOrderHistoryArr(Object.values(snapshot.val()));
           } else {
             console.log("No data2 available");
           }
@@ -301,7 +300,7 @@ export default function App() {
         <Route path="/Address" render={() => <Address userKey={userKey} addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
         <Route path="/Wish list" render={() => <FavouriteList userKey={userKey} wishList={wishArr} originWishObj={originWishObj} />} />
-        <Route path="/Order History" render={() => <OrderHistory />} />
+        <Route path="/Order History" render={() => <OrderHistory orderHistoryArr={orderHistoryArr} />} />
       </View>
     </NativeRouter>
   );

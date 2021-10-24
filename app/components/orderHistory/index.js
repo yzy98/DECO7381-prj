@@ -21,17 +21,19 @@ const getImage = (name) => {
   }
 };
 
-const OrderHistory = () => {
-  const orderArr = [
-    {"id": 1, "Name": "Apple", "Price": 5, "Count": 2, "Paid": 10, "Status": "Being Made", "Time": "2021/09/01"},
-    {"id": 2, "Name": "Banana", "Price": 6, "Count": 1, "Paid": 6, "Status": "Cancelled", "Time": "2021/09/05"},
-    {"id": 3, "Name": "Strawberry", "Price": 7, "Count": 3, "Paid": 21, "Status": "Delivered", "Time": "2021/09/09"},
-    {"id": 4, "Name": "Blueberry", "Price": 8, "Count": 3, "Paid": 24, "Status": "Delivered", "Time": "2021/09/09"},
-    {"id": 5, "Name": "Banana", "Price": 7, "Count": 3, "Paid": 21, "Status": "Delivered", "Time": "2021/09/09"},
-  ];
+const OrderHistory = (props) => {
+const {orderHistoryArr} = props;
 
-  const body = orderArr.map((item) => {
-    return <OrderCard key={item.id} name={item.Name} price={item.Price} count={item.Count} paid={item.Paid} status={item.Status} time={item.Time} />;
+  // const orderArr = [
+  //   {"id": 1, "Name": "Apple", "Price": 5, "Count": 2, "Paid": 10, "Status": "Being Made", "Time": "2021/09/01"},
+  //   {"id": 2, "Name": "Banana", "Price": 6, "Count": 1, "Paid": 6, "Status": "Cancelled", "Time": "2021/09/05"},
+  //   {"id": 3, "Name": "Strawberry", "Price": 7, "Count": 3, "Paid": 21, "Status": "Delivered", "Time": "2021/09/09"},
+  //   {"id": 4, "Name": "Blueberry", "Price": 8, "Count": 3, "Paid": 24, "Status": "Delivered", "Time": "2021/09/09"},
+  //   {"id": 5, "Name": "Banana", "Price": 7, "Count": 3, "Paid": 21, "Status": "Delivered", "Time": "2021/09/09"},
+  // ];
+
+  const body = orderHistoryArr.map((item) => {
+    return <OrderCard key={item.id} name={item.Name} paid={item.Paid} status={item.Status} time={item.Time} />;
   });
 
   return (
@@ -43,7 +45,7 @@ const OrderHistory = () => {
       </View>
       <View style={styles.content}>
         <ScrollView style={styles.orderContainer}>
-          {orderArr.length > 0 ? body : <Text style={styles.empty}>There is no order history for now...</Text>}
+          {orderHistoryArr.length > 0 ? body : <Text style={styles.empty}>There is no order history for now...</Text>}
         </ScrollView>
       </View>
     </View>
