@@ -25,7 +25,6 @@ const CartCard = (props) => {
           <Text style={styles.font}>{name}</Text>
           <View style={styles.bodyBottom}>
             <Text style={styles.font}>${price}</Text>
-            <QuantityBtn />
           </View>
         </View>
       </View>

@@ -102,15 +102,6 @@ const FavouriteList= (props) => {
         <ScrollView style={styles.cartContainer}>
           {wishList.length > 0 ? body : <Text style={styles.empty}>There is no item in your wish list...</Text>}
         </ScrollView>
-        <View style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginTop: 20
-        }}>
-          <Radio selected={false} />
-          <Text>Select all</Text>
-        </View>
       </View>
       <View style={styles.btnContainer}>
         <MyButton title="Delete" click={handleDelete} disabled={currentArr.length == 0} />

@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import {TextInput} from 'react-native-gesture-handler';
 import {Link} from 'react-router-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+
+const logoImg = require('./images/logo.jpeg');
 
 /**
  * Check if given user exists in the database
@@ -85,7 +87,7 @@ const LoginScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Log in</Text>
+      <Image style={styles.image} source={logoImg} />
       <View style={styles.loginContainer}>
         <View style={styles.row}>
           <TextInput 
@@ -138,7 +140,7 @@ const styles= StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F6F8F9'
+    backgroundColor: '#FFF'
   },
   loginContainer: {
     display: 'flex',
@@ -171,6 +173,11 @@ const styles= StyleSheet.create({
     color: '#F6F8F9',
     fontSize: 16,
     textAlign: 'center'
+  },
+  image: {
+    width: 200,
+    height: 100,
+    marginBottom: 20
   }
 });
 
