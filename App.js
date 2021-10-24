@@ -41,6 +41,7 @@ export default function App() {
   const [originWishObj, setOriginWishObj] = useState({});
   const [userArr, setUserArr] = useState([]);
   const [originUserObj, setOriginUserObj] = useState({});
+  const [currentUserObj, setCurrentUserObj] = useState({});
 
   // set current user key from login
   const handleSetUserKey = (newKey) => {
@@ -53,7 +54,8 @@ export default function App() {
 
       database.ref().child('User').child(userKey).get().then((snapshot) => {
         if (snapshot.exists()) {
-          console.log('userdata', snapshot.val());
+          // console.log('userdata', snapshot.val());
+          setCurrentUserObj(snapshot.val())
         } else {
           console.log("No order data available");
         }
@@ -251,9 +253,9 @@ export default function App() {
         <Route path="/register" render={() => <RegisterScreen />} />
         <Route path="/home" render={() => <Home user={userName} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart ordersArr={ordersArr} />} />
-        <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} />} />
+        <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} userObj={currentUserObj} />} />
         <Route path="/checkout" render={() => <Checkout ordersArr={ordersArr} />} />
-        <Route path="/Account Information" render={() => <AccountInfo />} />
+        <Route path="/Account Information" render={() => <AccountInfo userObj={currentUserObj} />} />
         <Route path="/Address" render={() => <Address userKey={userKey} addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
         <Route path="/Wish list" render={() => <FavouriteList userKey={userKey} wishList={wishArr} originWishObj={originWishObj} />} />

@@ -7,7 +7,8 @@ import MyGoBack from '../myGoBack';
 import BagIcon from '../bagIcon';
 
 const MyInfo = (props) => {
-  const {name, email} = props;
+  const {userObj} = props;
+  const {Name, Email, Password} = userObj;
 
   const handleLogOut = () => {
     alert('log out');
@@ -24,8 +25,8 @@ const MyInfo = (props) => {
         </View>
         <View style={styles.avator}>
           <FontAwesomeIcon icon={faUserCircle} size={100} />
-          <Text style={styles.fontRegular}>Navan Gomes</Text>
-          <Text>navangomes&#64;gmail.com</Text>
+          <Text style={styles.fontRegular}>{Name}</Text>
+          <Text>{Email}</Text>
         </View>
         <View style={styles.myAccount}>
           <AccountLi text={'Account Information'} icon={faUser} />

@@ -5,19 +5,21 @@ import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import MyGoBack from '../myGoBack';
 import MyButton from '../myButton';
 
-const AccountInfo = () => {
+const AccountInfo = (props) => {
+  const {userObj} = props;
+  const {Name, Email, Password} = userObj;
   // mock
-  const userInfo = {
-    'id': 0,
-    'name': 'Mike James',
-    'password': 'newpassword',
-    'email': 'ttt@www.com'
-  };
+  // const userInfo = {
+  //   'id': 0,
+  //   'name': 'Mike James',
+  //   'password': 'newpassword',
+  //   'email': 'ttt@www.com'
+  // };
 
-  const {id, name, password, email} = userInfo;
-  const [currentName, setCurrentName] = useState(name);
-  const [currentEmail, setCurrentEmail] = useState(email);
-  const [currentPwd, setCurrentPwd] = useState(password);
+  // const {id, name, password, email} = userInfo;
+  const [currentName, setCurrentName] = useState(Name);
+  const [currentEmail, setCurrentEmail] = useState(Email);
+  const [currentPwd, setCurrentPwd] = useState(Password);
 
 
   const handleBtnClick = () => {
