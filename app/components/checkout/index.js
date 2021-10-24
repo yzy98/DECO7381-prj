@@ -7,7 +7,26 @@ import {faCheckCircle, faEdit, faPlusSquare} from '@fortawesome/free-solid-svg-i
 import { useEffect } from 'react';
 import MyButton from '../myButton';
 import MyGoBack from '../myGoBack';
+import PayPalCheckout from 'react-paypal-checkout-button'
 
+const PaypalBtn = (props) => {
+  const {totalAmount} = props;
+
+  return (
+    <PayPalCheckout 
+      clientId='AR4-nctm9jSuj4MLysnPFfKtwTYXpp__uq13O3_Kw1yaBG-h-NE_0KbYmsiSanu26HI1coxko2ZWdWID'
+      amount={totalAmount}
+      currency='USD'
+      onSuccess={(data, order) => {
+        console.log('data', data);
+        console.log('order', order);
+      }}
+      onError={(error) => {
+        console.log(error)
+      }}
+    />
+  );
+};
 
 const visaIcon = require('./assets/visa.png');
 const paypalIcon = require('./assets/paypal.png'); 
@@ -16,95 +35,9 @@ const jcbIcon = require('./assets/jcb.png');
 const wuIcon = require('./assets/western-union.png');
 const unionPayIcon = require('./assets/unionpay.png');
 
-const fetch = require('node-fetch');
-const authUrl = "https://api-m.sandbox.paypal.com/v1/oauth2/token";
-const clientIdAndSecret = "AR4-nctm9jSuj4MLysnPFfKtwTYXpp__uq13O3_Kw1yaBG-h-NE_0KbYmsiSanu26HI1coxko2ZWdWID:EO1SZXxLX-T725slCyxVIOZZESHFeuHHJ50l_6Ja76JEHflbFSAtklsZgUr3aeFX4J7A2dQa70kPX9v7";
-const base64 = Buffer.from(clientIdAndSecret).toString('base64')
-let accessToken = '';
-
-const dataDetail = {
-  "intent": "sale",
-  "payer": {
-      "payment_method": "paypal"
-  },
-  "transactions": [{
-      "amount": {
-          "total": 100,
-          "currency": "USD",
-          "details": {
-              "subtotal": 100,
-              "tax": "0",
-              "shipping": "0",
-              "handling_fee": "0",
-              "shipping_discount": "0",
-              "insurance": "0"
-          }
-      }
-  }],
-  "redirect_urls": {
-      "return_url": "https://example.com",
-      "cancel_url": "https://example.com"
-  }
-}
-
-fetch(authUrl, { 
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Accept-Language': 'en_US',
-        'Authorization': `Basic ${base64}`,
-    },
-    body: 'grant_type=client_credentials'
-}).then(function(response) {
-    return response.json();
-    // console.log(response);
-}).then(async (data) => {
-    console.log(data.access_token);
-    accessToken = data.access_token;
-
-    let createRequest = {
-      method: 'POST', 
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer '+(accessToken)
-      },
-      body:JSON.stringify(dataDetail)
-    }
-
-    fetch ('https://api.sandbox.paypal.com/v1/payments/payment',createRequest)
-      .then(function(response) {
-          console.log('Response object', response);
-          return response.json()
-      }).then(async(data) => {
-          console.log('Response data',data);
-          console.log('Response data (formatted)', JSON.stringify(data,null,4) );
-
-          let request = {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+(accessToken)
-            },
-            body:JSON.stringify({
-              "amount": {
-                "value": "100",
-                "currency_code": "USD"
-              },
-              "invoice_id": "INVOICE-123",
-              "final_capture": true,
-              "note_to_payer": "If the ordered color is not available, we will substitute with a different color free of charge.",
-              "soft_descriptor": "Bob's Custom Sweaters"
-            })
-          }
-
-      }).catch(err => {
-          console.log({ ...err })
-      })
-
-}).catch(function() {
-    console.log("couldn't get auth token");
-});
+// const fetch = require('node-fetch');
+// const authUrl = "https://api-m.sandbox.paypal.com/v1/oauth2/token";
+const clientId = "AR4-nctm9jSuj4MLysnPFfKtwTYXpp__uq13O3_Kw1yaBG-h-NE_0KbYmsiSanu26HI1coxko2ZWdWID";
 
 const Checkout = (props) => {
   const location = useLocation();
@@ -114,11 +47,6 @@ const Checkout = (props) => {
   const paySelect = (name) => {
     setCurrentPay(name);
     console.log(name);
-  };
-
-  const handleConfirm = () => {
-    alert('checkout confirmed!');
-    // call api here
   };
 
   return (
@@ -132,7 +60,7 @@ const Checkout = (props) => {
         <Text style={{fontSize: 20, color: '#03045e'}}>Payment Details</Text>
         <Text style={styles.row}>
           <Text>Shipping Fee</Text>
-          <Text>$50</Text>
+          <Text>$20</Text>
         </Text>
         <Text style={styles.row}>
           <Text>Sub Total</Text>
@@ -140,7 +68,7 @@ const Checkout = (props) => {
         </Text>
         <Text style={styles.row}>
           <Text>Total</Text>
-          <Text>${totalCost + 50}</Text>
+          <Text>${totalCost + 20}</Text>
         </Text>
       </View>
       <View style={styles.method}>
@@ -156,26 +84,6 @@ const Checkout = (props) => {
           <PayCard icon={unionPayIcon} name={'unionPay'} paySelect={paySelect} currentPay={currentPay} />
           <PayCard icon={jcbIcon} name={'jcb'} paySelect={paySelect} currentPay={currentPay} />
         </ScrollView>
-        <View 
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 15
-          }}
-        >
-          <FontAwesomeIcon icon={faPlusSquare} color={'#03045e'} size={90} />
-          <Text
-            style={{
-              fontSize: 18,
-              color: '#03045e',
-              marginLeft: 15
-            }}
-          >
-            Add a new card
-          </Text>
-        </View>
-        <Text style={{fontSize: 20, color: '#03045e'}}>Valid Coupons</Text>
-        <View style={{height: 80}} />
         <Text style={{fontSize: 20, color: '#03045e'}}>Delivery Address</Text>
         <View 
           style={{
@@ -190,7 +98,7 @@ const Checkout = (props) => {
           <FontAwesomeIcon icon={faEdit} color={'grey'} size={20} />
         </View>
         <View style={styles.btnContainer}>
-          <MyButton title={'Confirm'} click={handleConfirm} />
+          {currentPay === 'paypal' ? <PaypalBtn totalAmount={totalCost + 20} /> : <Text style={styles.sorry}>Sorry, this payment method has not been supported, please try other methods...</Text>}
         </View>
       </View>
     </View>
@@ -295,6 +203,11 @@ const styles= StyleSheet.create({
     display: 'flex',
     alignItems: 'center'
   },
+  sorry: {
+    fontSize: 16,
+    color: 'rgb(220, 47, 2)',
+    textAlign: 'center'
+  }
 });
 
 export default Checkout;
