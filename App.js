@@ -311,7 +311,7 @@ export default function App() {
         <Route path="/home" render={() => <Home user={userName} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} />} />
         <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} userObj={currentUserObj} />} />
-        <Route path="/checkout" render={() => <Checkout userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} />} />
+        <Route path="/checkout" render={() => <Checkout userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} addressList={addressArr} />} />
         <Route path="/Account Information" render={() => <AccountInfo userObj={currentUserObj} />} />
         <Route path="/Address" render={() => <Address userKey={userKey} addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />

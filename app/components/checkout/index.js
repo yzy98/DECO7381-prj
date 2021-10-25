@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, Image, Pressable, ScrollView, Button} from 'react-native';
 import {useLocation} from 'react-router-native';
 import BagIcon from '../bagIcon';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faEdit, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
-import { useEffect } from 'react';
 import MyGoBack from '../myGoBack';
 import PayPalCheckout from 'react-paypal-checkout-button';
 import {useHistory} from "react-router-native";
 import {database} from '../../../App';
 import uniqid from 'uniqid';
+import {Link} from "react-router-native";
 
 const addToOrderHistory = async (userKey, objArr, status, time) => {
   objArr.forEach(element => {
@@ -73,7 +73,7 @@ const unionPayIcon = require('./assets/unionpay.png');
 const clientId = "AR4-nctm9jSuj4MLysnPFfKtwTYXpp__uq13O3_Kw1yaBG-h-NE_0KbYmsiSanu26HI1coxko2ZWdWID";
 
 const Checkout = (props) => {
-  const {userKey, originOrderCartObj} = props;
+  const {userKey, originOrderCartObj, addressList} = props;
   const location = useLocation();
   const {totalCost, selectedOrderArr} = location.state;
   const [currentPay, setCurrentPay] = useState('visa');
@@ -82,6 +82,14 @@ const Checkout = (props) => {
     setCurrentPay(name);
     console.log(name);
   };
+
+  let addressStr = 'no default address';
+  if (addressList.length > 0) {
+    const defaultObj = addressList.find(obj => obj.default == true);
+    if (defaultObj != undefined) {
+      addressStr = defaultObj.name + ', ' + defaultObj.phone + ', ' + defaultObj.location;
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -128,8 +136,10 @@ const Checkout = (props) => {
             marginBottom: 30
           }}
         >
-          <Text style={{fontSize: 18, color: 'grey'}}>YA California, UK</Text>
-          <FontAwesomeIcon icon={faEdit} color={'grey'} size={20} />
+          <Text style={{fontSize: 18, color: 'grey'}}>{addressStr}</Text>
+          <Link to="/Address">
+            <FontAwesomeIcon icon={faEdit} color={'grey'} size={20} />
+          </Link>
         </View>
         <View style={styles.btnContainer}>
           {currentPay === 'paypal' ? <PaypalBtn totalAmount={totalCost + 20} userKey={userKey} originOrderCartObj={originOrderCartObj} selectedOrderArr={selectedOrderArr} /> : <Text style={styles.sorry}>Sorry, this payment method has not been supported, please try other methods...</Text>}
