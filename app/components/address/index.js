@@ -8,6 +8,11 @@ import MyGoBack from '../myGoBack';
 import {database} from '../../../App';
 import uniqid from 'uniqid';
 
+const updateDefault = async (userKey, originObj, obj) => {
+  const childKey = getKeyByValue(originObj, obj);
+  return database.ref().child('User').child(userKey).child('Address').child(childKey).update({default: obj.default});
+};
+
 const addAddress = async (userKey, name, phone, location) => {
   const id = uniqid();
   return database.ref().child('User').child(userKey).child('Address').push({id, name, phone, location, "default": false});
@@ -82,7 +87,6 @@ const AddressInput = (props) => {
   const [nameValue, setNameValue] = useState('');
   const [phoneValue, setPhoneValue] = useState('');
   const [locationValue, setLocationValue] = useState('');
-  const [defaultValue, setDefaultValue] = useState(false);
   const [addressObj, setAddressObj] = useState({});
 
 
@@ -138,24 +142,6 @@ const AddressInput = (props) => {
           });
         }} 
       />
-      <Text>Set as default: </Text>
-      {/* <Switch 
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={defaultValue ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        value={defaultValue}
-        onChange={() => {
-          setDefaultValue((prev) => {
-            const current = !prev;
-            return current;
-          });
-          setAddressObj((prev) => {
-            prev["default"] = defaultValue;
-            const copy = {...prev};
-            return copy;
-          });
-        }}
-      /> */}
     </View>
   );
 };
@@ -163,23 +149,51 @@ const AddressInput = (props) => {
 const AddressCard = (props) => {
   const {id, name, phone, location, isDeafult, originAddressObj, userKey} = props;
   const [isDelete, setDelete] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(isDeafult);
 
   const handleDelete = () => {
     setDelete(true);
     // call api here
-    deleteAddress(userKey, originAddressObj, {id, name, phone, location, "default": isDeafult}).then(() => {
+    deleteAddress(userKey, originAddressObj, {id, name, phone, location, "default": isEnabled}).then(() => {
       console.log('deleted');
     }).catch((err) => {
       console.log(err);
     });
   };
 
+  
+  const toggleSwitch = () => {
+    setIsEnabled(prev => {
+      const temp = !prev;
+      return temp
+    });
+  };
+
+  useEffect(() => {
+    // update database
+    updateDefault(userKey, originAddressObj, {id, name, phone, location, "default": isEnabled}).then(() => {
+      console.log('updated');
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, [isEnabled]);
+
+
   return (
     !isDelete &&
     <View style={styles.cardContainer}>
       <FontAwesomeIcon icon={isDeafult ? faHome : faMapMarkerAlt} size={30} />
       <View style={styles.column}>
-        {isDeafult && <Text style={styles.default}>DEFAULT</Text>}
+        <View style={styles.rrow}>
+          {isDeafult ? <Text style={styles.default}>DEFAULT</Text> : <Text style={styles.notDefault}>SET DEFAULT</Text>}
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
         <Text>{name}</Text>
         <Text>{phone}</Text>
         <Text>{location}</Text>
@@ -232,11 +246,24 @@ const styles = StyleSheet.create({
     width: 280,
     marginLeft: 10
   },
+  rrow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   default: {
     fontWeight: 'bold',
     fontStyle: 'italic',
     borderWidth: 1,
-    borderColor: 'black'
+    borderColor: 'black',
+    marginRight: 10,
+    color: '#dc2f02'
+  },
+  notDefault: {
+    fontStyle: 'italic',
+    borderWidth: 1,
+    borderColor: 'black',
+    marginRight: 10
   },
   btnContainer: {
     display: 'flex',

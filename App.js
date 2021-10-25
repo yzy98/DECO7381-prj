@@ -161,6 +161,22 @@ export default function App() {
         });
       });
 
+      database.ref().child('User').child(userKey).child('Address').on('child_changed', () => {
+        database.ref().child('User').child(userKey).child('Address').get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log('yang', Object.values(snapshot.val()));
+            setOriginAddressObj(snapshot.val());
+            setAddressArr(Object.values(snapshot.val())); 
+          } else {
+            console.log("No data available");
+            setOriginAddressObj({});
+            setAddressArr([]);
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+
       // wishlist
       database.ref().child('User').child(userKey).child('WishList').get().then((snapshot) => {
         if (snapshot.exists()) {
@@ -187,7 +203,7 @@ export default function App() {
           console.log(err);
         });
       });
-  
+
       database.ref().child('User').child(userKey).child('WishList').on('child_removed', () => {
         database.ref().child('User').child(userKey).child('WishList').get().then((snapshot) => {
           if (snapshot.exists()) {
