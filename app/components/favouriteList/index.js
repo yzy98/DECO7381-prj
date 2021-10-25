@@ -24,6 +24,12 @@ const getImage = (name) => {
   }
 };
 
+const addToCart = async (userKey, objArr) => {
+  objArr.forEach(e => {
+    return database.ref().child('User').child(userKey).child('OrderCart').push({name: e.name, season: "true", price: e.price, id: e.id});
+  });
+};
+
 const deleteWishList = async (userKey, originObj, objArr) => {
   objArr.forEach(element => {
     const childKey = getKeyByValue(originObj, element);
@@ -59,7 +65,12 @@ const FavouriteList= (props) => {
 
   const handleAddToCart = () => {
     // call api with currentArr
-    // currently same as delete
+    addToCart(userKey, currentArr).then(() => {
+      console.log('add to cart successsully');
+    }).catch((err) => {
+      console.log(err);
+    });
+    // delete in the dabase
     deleteWishList(userKey, originWishObj, currentArr).then(() => {
       // reset current manipulate array to []
       setCurrentArr([]);
