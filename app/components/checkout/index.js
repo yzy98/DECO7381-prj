@@ -39,8 +39,6 @@ const PaypalBtn = (props) => {
       amount={totalAmount}
       currency='USD'
       onSuccess={(data, order) => {
-        console.log('data', data);
-        console.log('order', order);
         deleteOrderCart(userKey, originOrderCartObj, selectedOrderArr).then(() => {
           console.log('deleted!');
         }).catch((err) => {
