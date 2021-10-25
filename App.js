@@ -57,12 +57,25 @@ export default function App() {
       database.ref().child('User').child(userKey).get().then((snapshot) => {
         if (snapshot.exists()) {
           // console.log('userdata', snapshot.val());
-          setCurrentUserObj(snapshot.val())
+          setCurrentUserObj(snapshot.val());
         } else {
           console.log("No order data available");
         }
       }).catch((err) => {
         console.log(err);
+      });
+
+      database.ref().child('User').child(userKey).on('child_changed', () => {
+        database.ref().child('User').child(userKey).get().then((snapshot) => {
+          if (snapshot.exists()) {
+            // console.log('yang', Object.values(snapshot.val()));
+            setCurrentUserObj(snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
       });
 
       // Name
@@ -308,11 +321,11 @@ export default function App() {
       <View style={styles.container}>
         <Route path="/" render={() => <LoginScreen userArr={userArr} originUserObj={originUserObj} setUserKey={handleSetUserKey} />} />
         <Route path="/register" render={() => <RegisterScreen />} />
-        <Route path="/home" render={() => <Home user={userName} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
+        <Route path="/home" render={() => <Home user={currentUserObj.Name} userKey={userKey} ordersArr={ordersArr} fruitList={fruitArr} wishList={wishArr} />} />
         <Route path="/about" render={() => <OrderCart userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} />} />
         <Route path="/topics" render={() => <MyInfo ordersArr={ordersArr} userObj={currentUserObj} />} />
         <Route path="/checkout" render={() => <Checkout userKey={userKey} ordersArr={ordersArr} originOrderCartObj={originOrderCartObj} addressList={addressArr} />} />
-        <Route path="/Account Information" render={() => <AccountInfo userObj={currentUserObj} />} />
+        <Route path="/Account Information" render={() => <AccountInfo userKey={userKey} userObj={currentUserObj} />} />
         <Route path="/Address" render={() => <Address userKey={userKey} addressList={addressArr} originAddressObj={originAddressObj} />} />
         <Route path="/Account & Card" render={() => <AccountCard />} />
         <Route path="/Wish list" render={() => <FavouriteList userKey={userKey} wishList={wishArr} originWishObj={originWishObj} />} />

@@ -4,10 +4,19 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import MyGoBack from '../myGoBack';
 import MyButton from '../myButton';
+import {database} from '../../../App';
+import MyModal from '../myModal';
+import {useHistory} from "react-router-native";
+
+const updateUserInfo = async (userKey, currentName, currentEmail, currentPwd) => {
+  return database.ref().child('User').child(userKey).update({Name: currentName, Email: currentEmail, Password: currentPwd});
+};
 
 const AccountInfo = (props) => {
-  const {userObj} = props;
+  const {userKey, userObj} = props;
   const {Name, Email, Password} = userObj;
+  const history = useHistory();
+  const [isModalShow, setModalShow] = useState(false);
   // mock
   // const userInfo = {
   //   'id': 0,
@@ -23,27 +32,46 @@ const AccountInfo = (props) => {
 
 
   const handleBtnClick = () => {
-    alert('edit');
     // call api to save
+    updateUserInfo(userKey, currentName, currentEmail, currentPwd).then(() => {
+      setModalShow(true);
+    }).catch((err) => {
+      console.log(err);
+    });
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <MyGoBack />
-        <Text style={styles.title}>Account Information</Text>
-        <FontAwesomeIcon icon={faTimesCircle} size={20} style={{ visibility: 'hidden' }} />
+    <>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <MyGoBack />
+          <Text style={styles.title}>Account Information</Text>
+          <FontAwesomeIcon icon={faTimesCircle} size={20} style={{ visibility: 'hidden' }} />
+        </View>
+        <Text style={styles.span}>Name</Text>
+        <TextInput style={styles.input} value={currentName} onChangeText={setCurrentName} />
+        <Text style={styles.span}>Email</Text>
+        <TextInput style={styles.input} value={currentEmail} onChangeText={setCurrentEmail} />
+        <Text style={styles.span}>Password</Text>
+        <TextInput style={styles.input} value={currentPwd} onChangeText={setCurrentPwd} />
+        <View style={styles.btnContainer}>
+          <MyButton title={'Save'} click={handleBtnClick} />
+        </View>
       </View>
-      <Text style={styles.span}>Name</Text>
-      <TextInput style={styles.input} value={currentName} onChangeText={setCurrentName} />
-      <Text style={styles.span}>Email</Text>
-      <TextInput style={styles.input} value={currentEmail} onChangeText={setCurrentEmail} />
-      <Text style={styles.span}>Password</Text>
-      <TextInput style={styles.input} value={currentPwd} onChangeText={setCurrentPwd} />
-      <View style={styles.btnContainer}>
-        <MyButton title={'Save'} click={handleBtnClick} />
-      </View>
-    </View>
+      {isModalShow && 
+        <MyModal 
+          title='Congratulations!'
+          content={<Text>You have successfully update your information!</Text>}
+          isVisible={isModalShow} 
+          setVisible={setModalShow}
+          noClose={true}
+          onSave={() => {
+            history.goBack();
+          }}
+          saveText="got it!"
+        />
+      }
+    </>
   );
 };
 
