@@ -52,10 +52,6 @@ const Home = (props) => {
                 <Text style={isInSeason ? styles.offSeasonText : styles.inSeasonText}>Off season</Text>
               </View>
             </Pressable>
-            <View style={styles.seasonContainer}>
-              <Image style={{width: 70, height: 70}} source={couponICon} />
-              <Text style={{marginTop: 10}}>Coupons</Text>
-            </View>
           </View>
           <View style={styles.middleRight}>
             <Text style={styles.popularProduct}>
