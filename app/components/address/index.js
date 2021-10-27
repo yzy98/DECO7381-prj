@@ -6,7 +6,10 @@ import MyButton from '../myButton';
 import MyModal from '../myModal';
 import MyGoBack from '../myGoBack';
 import {database} from '../../../App';
-import uniqid from 'uniqid';
+
+const getId = () => {
+  return Math.floor(Math.random() * 1000);
+};
 
 const updateDefault = async (userKey, originObj, obj) => {
   const childKey = getKeyByValue(originObj, obj);
@@ -14,7 +17,7 @@ const updateDefault = async (userKey, originObj, obj) => {
 };
 
 const addAddress = async (userKey, name, phone, location) => {
-  const id = uniqid();
+  const id = getId();
   return database.ref().child('User').child(userKey).child('Address').push({id, name, phone, location, "default": false});
 };
 

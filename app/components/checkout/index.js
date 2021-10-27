@@ -8,12 +8,15 @@ import MyGoBack from '../myGoBack';
 import PayPalCheckout from 'react-paypal-checkout-button';
 import {useHistory} from "react-router-native";
 import {database} from '../../../App';
-import uniqid from 'uniqid';
 import {Link} from "react-router-native";
+
+const getId = () => {
+  return Math.floor(Math.random() * 1000);
+};
 
 const addToOrderHistory = async (userKey, objArr, status, time) => {
   objArr.forEach(element => {
-    const id = uniqid();
+    const id = getId();
     return database.ref().child('User').child(userKey).child('OrderHistory').push({id, Name: element.name, Paid: element.price, Status: status, Time: time});
   });
 };

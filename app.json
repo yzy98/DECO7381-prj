@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DECO7381prj",
-    "slug": "DECO7381prj",
+    "name": "F-mart",
+    "slug": "fmart",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
@@ -9,10 +9,14 @@
     "web": {
       "build": {
         "babel": {
-          "include": ["react-router-native"]
+          "include": [
+            "react-router-native"
+          ]
         }
       }
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/yzy98/DECO7381-prj.git"
   },
   "name": "DECO7381prj"
 }

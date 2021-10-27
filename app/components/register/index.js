@@ -4,11 +4,14 @@ import {useHistory} from "react-router-native";
 import MyGoBack from '../myGoBack';
 import MyButton from '../myButton';
 import {database} from '../../../App';
-import uniqid from 'uniqid';
 import MyModal from '../myModal';
 
+const getId = () => {
+  return Math.floor(Math.random() * 1000);
+};
+
 const addUser = async (Name, AccountNo, Email, Password) => {
-  const id = uniqid();
+  const id = getId();
   return database.ref().child('User').push({id, Name, AccountNo, Email, Password});
 };
 

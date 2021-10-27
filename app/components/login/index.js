@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
+import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
 import {Link} from 'react-router-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
